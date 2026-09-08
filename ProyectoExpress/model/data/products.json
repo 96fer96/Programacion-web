@@ -1,0 +1,225 @@
+[
+    {
+        "id": 1,
+        "name": "Auriculares inalámbricos",
+        "price": 29999,
+        "stock": 15,
+        "category": "electronica",
+        "description": "Auriculares Bluetooth con micrófono integrado y batería recargable.",
+        "image": "/img/products/auriculares.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Teclado mecánico",
+        "price": 45999,
+        "stock": 10,
+        "category": "electronica",
+        "description": "Teclado mecánico con iluminación RGB y conexión USB.",
+        "image": "/img/products/teclado.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Mouse Gamer",
+        "price": 21999,
+        "stock": 18,
+        "category": "electronica",
+        "description": "Mouse óptico de alta precisión con botones configurables.",
+        "image": "/img/products/mouse-gamer.jpg"
+    },
+
+    {
+        "id": 4,
+        "name": "Fideos secos",
+        "price": 1800,
+        "stock": 40,
+        "category": "alimentos",
+        "description": "Paquete de fideos secos de trigo de 500 gramos.",
+        "image": "/img/products/fideos.jpg"
+    },
+    {
+        "id": 5,
+        "name": "Arroz largo fino",
+        "price": 2200,
+        "stock": 35,
+        "category": "alimentos",
+        "description": "Arroz largo fino seleccionado en presentación de 1 kilogramo.",
+        "image": "/img/products/arroz.jpg"
+    },
+    {
+        "id": 6,
+        "name": "Galletitas de chocolate",
+        "price": 2500,
+        "stock": 25,
+        "category": "alimentos",
+        "description": "Galletitas dulces con chips de chocolate.",
+        "image": "/img/products/galletitas.jpg"
+    },
+
+    {
+        "id": 7,
+        "name": "Agua mineral",
+        "price": 1500,
+        "stock": 50,
+        "category": "bebidas",
+        "description": "Agua mineral sin gas en botella de 1,5 litros.",
+        "image": "/img/products/agua-mineral.jpg"
+    },
+    {
+        "id": 8,
+        "name": "Jugo de naranja",
+        "price": 2800,
+        "stock": 30,
+        "category": "bebidas",
+        "description": "Jugo de naranja listo para consumir en envase de 1 litro.",
+        "image": "/img/products/jugo-naranja.jpg"
+    },
+    {
+        "id": 9,
+        "name": "Gaseosa cola",
+        "price": 3200,
+        "stock": 45,
+        "category": "bebidas",
+        "description": "Bebida gaseosa sabor cola en botella de 2,25 litros.",
+        "image": "/img/products/gaseosa-cola.jpg"
+    },
+
+    {
+        "id": 10,
+        "name": "Remera deportiva",
+        "price": 18999,
+        "stock": 20,
+        "category": "indumentaria",
+        "description": "Remera deportiva de tela liviana y respirable.",
+        "image": "/img/products/remera-deportiva.jpg"
+    },
+    {
+        "id": 11,
+        "name": "Pantalón jean",
+        "price": 35999,
+        "stock": 14,
+        "category": "indumentaria",
+        "description": "Pantalón de jean clásico para uso diario.",
+        "image": "/img/products/jean.jpg"
+    },
+    {
+        "id": 12,
+        "name": "Campera urbana",
+        "price": 64999,
+        "stock": 8,
+        "category": "indumentaria",
+        "description": "Campera urbana liviana con cierre frontal y bolsillos.",
+        "image": "/img/products/campera.jpg"
+    },
+
+    {
+        "id": 13,
+        "name": "Juego de cartas",
+        "price": 6999,
+        "stock": 22,
+        "category": "juegos",
+        "description": "Juego de cartas para reuniones familiares y grupos de amigos.",
+        "image": "/img/products/cartas.jpg"
+    },
+    {
+        "id": 14,
+        "name": "Ajedrez clásico",
+        "price": 17999,
+        "stock": 11,
+        "category": "juegos",
+        "description": "Juego de ajedrez con tablero plegable y piezas incluidas.",
+        "image": "/img/products/ajedrez.jpg"
+    },
+    {
+        "id": 15,
+        "name": "Joystick inalámbrico",
+        "price": 39999,
+        "stock": 13,
+        "category": "juegos",
+        "description": "Control inalámbrico compatible con PC y dispositivos móviles.",
+        "image": "/img/products/joystick.jpg"
+    },
+
+    {
+        "id": 16,
+        "name": "Cargador USB para auto",
+        "price": 11999,
+        "stock": 25,
+        "category": "automotor",
+        "description": "Adaptador de carga USB para toma de 12 V del automóvil.",
+        "image": "/img/products/cargador-auto.jpg"
+    },
+    {
+        "id": 17,
+        "name": "Aspiradora para automóvil",
+        "price": 34999,
+        "stock": 9,
+        "category": "automotor",
+        "description": "Aspiradora compacta portátil para limpieza interior del vehículo.",
+        "image": "/img/products/aspiradora-auto.jpg"
+    },
+    {
+        "id": 18,
+        "name": "Organizador de baúl",
+        "price": 22999,
+        "stock": 16,
+        "category": "automotor",
+        "description": "Organizador plegable con compartimientos para el baúl.",
+        "image": "/img/products/organizador-auto.jpg"
+    },
+
+    {
+        "id": 19,
+        "name": "Lámpara de mesa",
+        "price": 19999,
+        "stock": 17,
+        "category": "hogar",
+        "description": "Lámpara de mesa moderna para escritorio o dormitorio.",
+        "image": "/img/products/lampara.jpg"
+    },
+    {
+        "id": 20,
+        "name": "Juego de sábanas",
+        "price": 32999,
+        "stock": 12,
+        "category": "hogar",
+        "description": "Juego de sábanas de dos plazas con sábana ajustable y fundas.",
+        "image": "/img/products/sabanas.jpg"
+    },
+    {
+        "id": 21,
+        "name": "Set de utensilios de cocina",
+        "price": 27999,
+        "stock": 15,
+        "category": "hogar",
+        "description": "Set de utensilios resistentes al calor para cocina.",
+        "image": "/img/products/utensilios.jpg"
+    },
+
+    {
+        "id": 22,
+        "name": "Mochila urbana",
+        "price": 29999,
+        "stock": 18,
+        "category": "otros",
+        "description": "Mochila de uso diario con múltiples compartimientos.",
+        "image": "/img/products/mochila.jpg"
+    },
+    {
+        "id": 23,
+        "name": "Botella térmica",
+        "price": 24999,
+        "stock": 20,
+        "category": "otros",
+        "description": "Botella térmica reutilizable para bebidas frías y calientes.",
+        "image": "/img/products/botella-termica.jpg"
+    },
+    {
+        "id": 24,
+        "name": "Paraguas automático",
+        "price": 16999,
+        "stock": 14,
+        "category": "otros",
+        "description": "Paraguas compacto con sistema de apertura automática.",
+        "image": "/img/products/paraguas.jpg"
+    }
+]

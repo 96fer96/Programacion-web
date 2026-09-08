@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Carrito | MiEcommerce</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/styles.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+    <%- include("../partials/header") %>
+
+    <main class="cart-page-modern">
+
+        <div class="cart-top-link">
+            <a href="/products">
+                <i class="fa-solid fa-arrow-left"></i>
+                Volver
+            </a>
+        </div>
+
+        <h1 class="cart-main-title">
+            Productos en tu Carrito
+        </h1>
+
+
+        <% if (items.length === 0) { %>
+
+            <section class="empty-cart-modern">
+                <p>Tu carrito está vacío.</p>
+
+                <a
+                    href="/products"
+                    class="go-products-button"
+                >
+                    Ver productos
+                </a>
+            </section>
+
+        <% } else { %>
+
+            <section class="cart-modern-list">
+
+                <% items.forEach(item => { %>
+
+                    <article class="cart-modern-item">
+
+                        <!-- IMAGEN -->
+                        <a
+                            href="/products/<%= item.product.id %>"
+                            class="cart-modern-image"
+                        >
+                            <img
+                                src="<%= item.product.image %>"
+                                alt="<%= item.product.name %>"
+                            >
+                        </a>
+
+
+                        <!-- NOMBRE -->
+                        <div class="cart-modern-info">
+                            <a
+                                href="/products/<%= item.product.id %>"
+                                class="cart-modern-name"
+                            >
+                                <%= item.product.name %>
+                            </a>
+                        </div>
+
+
+                        <!-- BOTÓN QUITAR -->
+                        <form
+                            action="/cart/remove/<%= item.product.id %>"
+                            method="POST"
+                            class="cart-remove-form"
+                        >
+                            <button
+                                type="submit"
+                                class="cart-remove-button"
+                            >
+                                Quitar
+                            </button>
+                        </form>
+
+
+                        <!-- CONTROL DE CANTIDAD -->
+                        <form
+                            action="/cart/update/<%= item.product.id %>"
+                            method="POST"
+                            class="cart-quantity-form"
+                        >
+                            <button
+                                type="button"
+                                class="qty-btn qty-minus"
+                            >
+                                -
+                            </button>
+
+                            <input
+                                type="number"
+                                name="quantity"
+                                class="qty-input"
+                                value="<%= item.quantity %>"
+                                min="1"
+                                max="<%= item.product.stock %>"
+                                readonly
+                            >
+
+                            <button
+                                type="button"
+                                class="qty-btn qty-plus"
+                            >
+                                +
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="qty-submit-hidden"
+                                aria-hidden="true"
+                                tabindex="-1"
+                            >
+                                Actualizar
+                            </button>
+                        </form>
+
+
+                        <!-- SUBTOTAL -->
+                        <div class="cart-modern-price">
+                            $<%= item.subtotal %>
+                        </div>
+
+                    </article>
+
+                <% }) %>
+
+            </section>
+
+
+            <section class="cart-modern-summary">
+
+                <div class="cart-modern-total">
+                    <span>Total de Puntos</span>
+                    <strong>$<%= total %></strong>
+                </div>
+
+                <a
+                    href="/checkout"
+                    class="cart-pay-button"
+                >
+                    Ir a Pagar
+                </a>
+
+            </section>
+
+        <% } %>
+
+    </main>
+
+    <script src="/js/cart.js"></script>
+
+</body>
+</html>

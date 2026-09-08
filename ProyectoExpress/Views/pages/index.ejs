@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Inicio | MiEcommerce</title>
+
+
+    <!-- CSS general del sitio -->
+
+    <link rel="stylesheet" href="/css/styles.css">
+    <!--CSS con estilos específicos para dispositivos móviles
+    En realidad mobile.css se carga siempre. Lo que hace que sus estilos se apliquen únicamente en una pantalla pequeña es el:
+    @media (max-width: 768px)
+    -->
+    <link rel="stylesheet" href="/css/mobile.css">
+
+
+    <!-- Font Awesome proporciona los íconos -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+   <!-- HEADER DE ESCRITORIO -->
+
+    <%- include("../partials/header") %>
+
+
+    <!-- HEADER PARA DISPOSITIVOS MÓVILES -->
+
+    <%- include("../partials/header-mobile") %>
+
+
+
+    <main>
+
+
+        <!-- TÍTULO PRINCIPAL PARA ACCESIBILIDAD -->
+
+        <h1 class="sr-only">
+            Inicio de MiEcommerce
+        </h1>
+
+
+
+        <!-- =========================
+            CATEGORÍAS SUPERIORES
+        ========================= -->
+
+        <section
+            class="top-categories"
+            aria-label="Categorías principales"
+        >
+
+            <%- include("../partials/categories") %>
+
+        </section>
+
+
+
+        <!-- =========================
+     BENEFICIOS
+     ========================= -->
+
+        <section
+            class="benefits-section"
+            aria-labelledby="benefits-title"
+        >
+
+            <h2
+                id="benefits-title"
+                class="sr-only"
+            >
+                Beneficios y promociones
+            </h2>
+
+            <div class="benefits-container">
+
+                <a
+                    href="#"
+                    class="benefit-card"
+                    aria-label="Ver beneficio promocional 1"
+                >
+                    <img
+                        src="/img/benefits/beneficio1.jpg"
+                        alt="Beneficio promocional de MiEcommerce"
+                    >
+                </a>
+
+
+                <a
+                    href="#"
+                    class="benefit-card"
+                    aria-label="Ver beneficio promocional 2"
+                >
+                    <img
+                        src="/img/benefits/beneficio2.jpg"
+                        alt="Segundo beneficio promocional de MiEcommerce"
+                    >
+                </a>
+
+            </div>
+
+        </section>
+        <!-- =========================
+            PRODUCTOS RECOMENDADOS
+            ========================= -->
+
+        <section
+            class="products-section"
+            aria-labelledby="products-title"
+        >
+
+            <h2 id="products-title">
+                Te puede interesar
+            </h2>
+
+
+            <ul class="products-grid">
+
+                <% products.forEach(product => { %>
+
+                    <li>
+
+                        <a
+                            href="/products/<%= product.id %>"
+                            class="product-card"
+                        >
+
+                            <div class="product-image-container">
+
+                                <img
+                                    src="<%= product.image %>"
+                                    alt="Imagen de <%= product.name %>"
+                                >
+
+                            </div>
+
+
+                            <div class="product-info">
+
+                                <h3>
+                                    <%= product.name %>
+                                </h3>
+
+                                <p class="product-description">
+                                    <%= product.description %>
+                                </p>
+
+                                <p class="product-price">
+                                    $<%= product.price %>
+                                </p>
+
+                            </div>
+
+                        </a>
+
+                    </li>
+
+                <% }) %>
+
+            </ul>
+
+        </section>
+
+        <!-- =========================
+            PRODUCTOS
+        ========================= -->
+
+        <section
+            class="products-section"
+            aria-labelledby="products-title"
+        >
+
+            <h2 id="products-title">
+                Los mas vendidos
+            </h2>
+
+
+            <ul class="products-grid">
+
+
+                <% products.forEach(product => { %>
+
+
+                    <li>
+
+                        <a
+                            href="/products/<%= product.id %>"
+                            class="product-card"
+                        >
+
+
+                            <img
+                                src="<%= product.image %>"
+                                alt="<%= product.name %>"
+                            >
+
+
+                            <div class="product-info">
+
+
+                                <h3>
+                                    <%= product.name %>
+                                </h3>
+
+
+                                <p class="product-price">
+                                    $<%= product.price %>
+                                </p>
+
+
+                            </div>
+
+
+                        </a>
+
+                    </li>
+
+
+                <% }) %>
+
+
+            </ul>
+
+        </section>
+
+
+
+        <!-- =========================
+             CATEGORÍAS INFERIORES
+             ========================= -->
+
+        <section
+            class="bottom-categories"
+            aria-label="Categorías principales"
+        >
+
+            <%- include("../partials/categories") %>
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

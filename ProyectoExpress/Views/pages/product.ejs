@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        <%= product.name %> | MiEcommerce
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/styles.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <%- include("../partials/header") %>
+
+
+    <main class="product-detail-page">
+
+
+        <!-- NAVEGACIÓN -->
+
+        <nav
+            class="product-detail-breadcrumb"
+            aria-label="Navegación del producto"
+        >
+
+            <a href="/products">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Volver al listado
+
+            </a>
+
+
+            <span>›</span>
+
+
+            <a
+                href="/products?category=<%= product.category %>"
+            >
+
+                <%= product.category %>
+
+            </a>
+
+        </nav>
+
+
+
+        <!-- PRODUCTO PRINCIPAL -->
+
+        <section class="product-detail-card">
+
+
+            <!-- IMAGEN -->
+
+            <div class="product-detail-image">
+
+                <img
+                    src="<%= product.image %>"
+                    alt="Imagen de <%= product.name %>"
+                >
+
+            </div>
+
+
+
+            <!-- INFORMACIÓN -->
+
+            <div class="product-detail-info">
+
+
+                <p class="product-detail-category">
+
+                    <%= product.category %>
+
+                </p>
+
+
+                <h1>
+
+                    <%= product.name %>
+
+                </h1>
+
+
+                <p class="product-detail-price">
+
+                    $<%= product.price %>
+
+                </p>
+
+
+
+                <div class="product-detail-stock">
+
+
+                    <% if (product.stock > 0) { %>
+
+                        <span class="stock-available">
+
+                            Stock disponible:
+                            <strong>
+                                <%= product.stock %>
+                            </strong>
+
+                        </span>
+
+
+                    <% } else { %>
+
+                        <span class="stock-unavailable">
+
+                            Sin stock
+
+                        </span>
+
+                    <% } %>
+
+
+                </div>
+
+
+
+                <p class="product-detail-description">
+
+                    <%= product.description %>
+
+                </p>
+
+
+
+                <!-- AGREGAR AL CARRITO -->
+
+                <% if (product.stock > 0) { %>
+
+
+                    <form
+                        action="/cart/add/<%= product.id %>"
+                        method="POST"
+                        class="product-add-form"
+                    >
+
+
+                        <div class="product-quantity-field">
+
+                            <label for="quantity">
+
+                                Cantidad
+
+                            </label>
+
+
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                value="1"
+                                min="1"
+                                max="<%= product.stock %>"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <button
+                            type="submit"
+                            class="product-add-button"
+                        >
+
+                            <i class="fa-solid fa-cart-plus"></i>
+
+                            Agregar al carrito
+
+                        </button>
+
+
+                    </form>
+
+
+                <% } else { %>
+
+
+                    <button
+                        type="button"
+                        class="product-add-button"
+                        disabled
+                    >
+
+                        Sin stock
+
+                    </button>
+
+
+                <% } %>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- PRODUCTOS RELACIONADOS -->
+
+        <% if (
+            typeof suggestedProducts !== "undefined"
+            &&
+            suggestedProducts.length > 0
+        ) { %>
+
+
+            <section
+                class="related-products-section"
+                aria-labelledby="related-products-title"
+            >
+
+
+                <h2 id="related-products-title">
+
+                    También te puede interesar
+
+                </h2>
+
+
+
+                <ul class="products-grid">
+
+
+                    <% suggestedProducts.forEach(suggested => { %>
+
+
+                        <li>
+
+
+                            <a
+                                href="/products/<%= suggested.id %>"
+                                class="product-card"
+                            >
+
+
+                                <div class="product-image-container">
+
+                                    <img
+                                        src="<%= suggested.image %>"
+                                        alt="Imagen de <%= suggested.name %>"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+
+                                    <h3>
+
+                                        <%= suggested.name %>
+
+                                    </h3>
+
+
+                                    <p class="product-description">
+
+                                        <%= suggested.description %>
+
+                                    </p>
+
+
+                                    <p class="product-price">
+
+                                        $<%= suggested.price %>
+
+                                    </p>
+
+
+                                </div>
+
+
+                            </a>
+
+
+                        </li>
+
+
+                    <% }) %>
+
+
+                </ul>
+
+
+            </section>
+
+
+        <% } %>
+
+
+
+        <!-- CATEGORÍAS -->
+
+        <section
+            class="bottom-categories"
+            aria-label="Categorías de productos"
+        >
+
+            <%- include("../partials/categories") %>
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

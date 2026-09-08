@@ -1,0 +1,86 @@
+<header class="site-header">
+
+    <!-- LOGO / MARCA -->
+    <a
+        href="/"
+        class="brand"
+        aria-label="MiEcommerce - Inicio"
+    >
+        MiEcommerce
+    </a>
+
+
+    <!-- BUSCADOR -->
+    <form
+        class="search-form"
+        action="/products"
+        method="GET"
+        role="search"
+    >
+
+        <label
+            for="product-search"
+            class="sr-only"
+        >
+            Buscar productos
+        </label>
+
+        <input
+            type="search"
+            id="product-search"
+            name="q"
+            placeholder="Buscar productos..."
+        >
+
+        <button
+            type="submit"
+            aria-label="Buscar"
+        >
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+    </form>
+
+
+    <!-- SECCIÓN DERECHA -->
+    <div class="header-user-section">
+
+        <% if (currentUser) { %>
+
+            <span class="header-username">
+                <%= currentUser.name %>
+            </span>
+
+
+            <a
+                href="/cart"
+                class="header-cart"
+                aria-label="Ver carrito"
+            >
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                <% if (cartCount > 0) { %>
+
+                    <span class="cart-count">
+                        <%= cartCount %>
+                    </span>
+
+                <% } %>
+
+            </a>
+
+        <% } else { %>
+
+            <a
+                href="/login"
+                class="header-login"
+            >
+                Iniciar sesión
+            </a>
+
+        <% } %>
+
+    </div>
+
+</header>

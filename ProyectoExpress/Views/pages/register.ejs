@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Registrarse | MiEcommerce</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="/" class="logo">
+            MiEcommerce
+        </a>
+    </header>
+
+
+    <main class="register-page">
+
+        <section
+            class="register-card"
+            aria-labelledby="register-title"
+        >
+
+            <h1 id="register-title">
+                ¡Registrate!
+            </h1>
+
+
+            <!-- MENSAJE DE ERROR DEL SERVIDOR -->
+
+            <% if (typeof error !== "undefined") { %>
+
+                <p
+                    class="error-message"
+                    role="alert"
+                >
+                    <%= error %>
+                </p>
+
+            <% } %>
+
+
+            <form
+                action="/register"
+                method="POST"
+                id="register-form"
+            >
+
+
+                <!-- USUARIO -->
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Usuario
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Tu usuario"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- NOMBRE -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Nombre
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Tu nombre"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Tu email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CONTRASEÑA -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Tu nueva contraseña"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CONFIRMAR CONTRASEÑA -->
+
+                <div class="form-group">
+
+                    <label for="confirmPassword">
+                        Repetir contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Repetí tu contraseña"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="register-button"
+                >
+                    Crear cuenta
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <p class="login-message">
+
+            ¿Ya tenés una cuenta?
+
+            <a href="/login">
+                Iniciá sesión
+            </a>
+
+        </p>
+
+    </main>
+
+
+    <script src="/js/register.js"></script>
+
+</body>
+
+</html>

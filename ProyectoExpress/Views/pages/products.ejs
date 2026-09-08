@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Productos | MiEcommerce</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/styles.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <%- include("../partials/header") %>
+
+
+    <main>
+
+
+        <!-- CATEGORÍAS -->
+
+        <section
+            class="top-categories"
+            aria-label="Categorías de productos"
+        >
+
+            <%- include("../partials/categories") %>
+
+        </section>
+
+
+
+        <!-- LISTADO DE PRODUCTOS -->
+
+        <section
+            class="products-section"
+            aria-labelledby="products-title"
+        >
+<!--
+si se solicita un query con un término de búsqueda, se muestra un título indicando los resultados de la búsqueda
+sino, se fija si se solicitó una categoría, y se muestra un título indicando la categoría seleccionada
+si no se solicitó ni búsqueda ni categoría, se muestra un título indicando que se muestran todos los productos-->
+            <% if (searchTerm) { %>
+
+                <h1>
+                    Resultados para:
+                    "<%= searchTerm %>"
+                </h1>
+
+            <% } else if (selectedCategory) { %>
+
+                <h1>
+                    Productos de
+                    <%= selectedCategory %>
+                </h1>
+
+            <% } else { %>
+
+                <h1>
+                    Todos los productos
+                </h1>
+
+            <% } %>
+
+
+
+            <!-- SI NO HAY PRODUCTOS -->
+
+            <% if (products.length === 0) { %>
+
+                <% if (searchTerm) { %>
+
+                    <p class="no-products">
+
+                        No se encontraron productos
+                        para "<%= searchTerm %>".
+
+                    </p>
+
+                <% } else { %>
+
+                    <p class="no-products">
+
+                        No hay productos disponibles
+                        en esta categoría.
+
+                    </p>
+
+                <% } %>
+
+
+            <% } else { %>
+
+
+                <!-- GRILLA DE PRODUCTOS -->
+
+                <ul class="products-grid">
+
+
+                    <% products.forEach(product => { %>
+
+
+                        <li>
+
+
+                            <a
+                                href="/products/<%= product.id %>"
+                                class="product-card"
+                            >
+
+
+                                <div class="product-image-container">
+
+                                    <img
+                                        src="<%= product.image %>"
+                                        alt="Imagen de <%= product.name %>"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+
+                                    <h2>
+
+                                        <%= product.name %>
+
+                                    </h2>
+
+
+                                    <p class="product-description">
+
+                                        <%= product.description %>
+
+                                    </p>
+
+
+                                    <p class="product-price">
+
+                                        $<%= product.price %>
+
+                                    </p>
+
+
+                                    <% if (product.stock > 0) { %>
+
+                                        <p class="product-stock">
+
+                                            Stock:
+                                            <%= product.stock %>
+
+                                        </p>
+
+                                    <% } else { %>
+
+                                        <p class="product-no-stock">
+
+                                            Sin stock
+
+                                        </p>
+
+                                    <% } %>
+
+
+                                </div>
+
+
+                            </a>
+
+
+                        </li>
+
+
+                    <% }) %>
+
+
+                </ul>
+
+
+            <% } %>
+
+
+        </section>
+
+
+
+        <!-- CATEGORÍAS INFERIORES -->
+
+        <section
+            class="bottom-categories"
+            aria-label="Categorías de productos"
+        >
+
+            <%- include("../partials/categories") %>
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

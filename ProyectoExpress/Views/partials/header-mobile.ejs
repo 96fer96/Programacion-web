@@ -1,0 +1,193 @@
+<!-- ==========================================
+     HEADER PARA DISPOSITIVOS MÓVILES
+=========================================== -->
+
+<header class="mobile-header">
+
+
+    <!-- LOGO / MARCA -->
+
+    <a
+        href="/"
+        class="mobile-brand"
+        aria-label="MiEcommerce - Inicio"
+    >
+        MiEcommerce
+    </a>
+
+
+
+    <!-- BUSCADOR -->
+
+    <form
+        class="mobile-search-form"
+        action="/products"
+        method="GET"
+        role="search"
+    >
+
+        <label
+            for="mobile-product-search"
+            class="sr-only"
+        >
+            Buscar productos
+        </label>
+
+
+        <input
+            type="search"
+            id="mobile-product-search"
+            name="q"
+            placeholder="Buscar productos..."
+        >
+
+
+        <button
+            type="submit"
+            aria-label="Buscar"
+        >
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+    </form>
+
+
+
+    <!-- USUARIO LOGUEADO -->
+
+    <% if (currentUser) { %>
+
+
+        <!-- CARRITO -->
+
+        <a
+            href="/cart"
+            class="mobile-header-icon mobile-cart"
+            aria-label="Ver carrito"
+        >
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+
+            <% if (cartCount > 0) { %>
+
+                <span class="mobile-cart-count">
+                    <%= cartCount %>
+                </span>
+
+            <% } %>
+
+        </a>
+
+
+
+        <!-- BOTÓN USUARIO -->
+
+        <label
+            for="mobile-menu-toggle"
+            class="mobile-header-icon mobile-user-button"
+            aria-label="Abrir menú de usuario"
+        >
+
+            <i class="fa-solid fa-user"></i>
+
+        </label>
+
+
+    <% } else { %>
+
+
+        <!-- SI NO ESTÁ LOGUEADO -->
+
+        <a
+            href="/login"
+            class="mobile-header-icon"
+            aria-label="Iniciar sesión"
+        >
+
+            <i class="fa-solid fa-user"></i>
+
+        </a>
+
+
+    <% } %>
+
+
+</header>
+
+
+
+<% if (currentUser) { %>
+
+
+    <!-- CHECKBOX QUE CONTROLA EL MENÚ -->
+
+    <input
+        type="checkbox"
+        id="mobile-menu-toggle"
+        class="mobile-menu-toggle"
+    >
+
+
+
+    <!-- FONDO OSCURO AL ABRIR EL MENÚ -->
+
+    <label
+        for="mobile-menu-toggle"
+        class="mobile-menu-overlay"
+    ></label>
+
+
+
+    <!-- MENÚ LATERAL -->
+
+    <aside class="mobile-user-menu">
+
+
+        <div class="mobile-menu-user">
+
+            <i class="fa-solid fa-circle-user"></i>
+
+            <span>
+                <%= currentUser.name %>
+            </span>
+
+        </div>
+
+
+
+        <nav class="mobile-menu-nav">
+
+
+            <a href="/">
+                Inicio
+            </a>
+
+
+            <a href="#">
+                Mis Compras
+            </a>
+
+
+            <a href="#">
+                Favoritos
+            </a>
+
+
+            <a href="#">
+                Historial
+            </a>
+
+
+            <a href="#">
+                Cambiar a Tema Oscuro
+            </a>
+
+
+        </nav>
+
+
+    </aside>
+
+
+<% } %>
