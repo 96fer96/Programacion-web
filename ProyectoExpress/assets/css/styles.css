@@ -1342,3 +1342,42 @@ HEADER
 
     border: 2px solid white;
 }
+
+/* ======================================================
+   ERROR 404
+====================================================== */
+
+.error-page {
+    min-height: 60vh;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 40px 20px;
+}
+
+.error-page h1 {
+    font-size: 72px;
+    margin-bottom: 10px;
+}
+
+.error-page p {
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.error-page a {
+    padding: 12px 24px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    background: #444;
+    color: white;
+}
