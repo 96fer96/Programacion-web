@@ -1,4 +1,3 @@
-const express = require("express");
 
 function showCheckout(req, res) {
     res.render("pages/checkout");

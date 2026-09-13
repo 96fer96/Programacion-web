@@ -5,7 +5,6 @@ const router = express.Router();
 
 
 // MODELOS
-const usersModel = require("../model/users.model");
 const productsModel = require("../model/products.model");
 
 //ROUTERS
@@ -15,6 +14,7 @@ const registerRoutes = require("./register.routes");
 const loginRoutes = require("./login.routes");
 const checkoutRoutes = require("./checkout.routes");
 const error404Routes = require("./error404.routes");
+const logoutRoutes = require("./logout.routes");
 
 
 // ======================================================
@@ -45,7 +45,10 @@ router.use(loginRoutes);
 
 router.use(checkoutRoutes);
 
+router.use(logoutRoutes);
+
 router.use(error404Routes);
+
 
 
 

@@ -51,6 +51,20 @@
                 <%= currentUser.name %>
             </span>
 
+            <form
+                action="/logout"
+                method="POST"
+                class="logout-form"
+            >
+
+                <button
+                    type="submit"
+                    class="logout-button"
+                >
+                    Cerrar sesión
+                </button>
+
+            </form>
 
             <a
                 href="/cart"

@@ -93,6 +93,8 @@
 
 
                 <!-- EMAIL -->
+                <!-- Se agrega un primer filtro para comprobar que el email tiene el simbolo @ y un dominio, pero                
+                -->
 
                 <div class="form-group">
 
@@ -113,6 +115,11 @@
 
 
                 <!-- CONTRASEÑA -->
+                <!-- Se realiza un primer filtro de lo que agrega el usuario al comprobar que no este vacia la
+                contraseña y que tenga al menos 8 caracteres. Para realizar los controles de validación es necesario
+                recurrir a JavaScript, ya que en el archivo register.controller.js se implementan las validaciones 
+                lógicas
+                -->
 
                 <div class="form-group">
 
@@ -126,7 +133,7 @@
                         name="password"
                         placeholder="Tu nueva contraseña"
                         autocomplete="new-password"
-                        minlength="6"
+                        minlength="8"
                         required
                     >
 
@@ -147,7 +154,7 @@
                         name="confirmPassword"
                         placeholder="Repetí tu contraseña"
                         autocomplete="new-password"
-                        minlength="6"
+                        minlength="8"
                         required
                     >
 

@@ -2,9 +2,6 @@
 // MODELOS
 // ======================================================
 
-const cartsModel =
-    require("../model/carts.model");
-
 const productsModel =
     require("../model/products.model");
 
@@ -23,12 +20,14 @@ function showCart(req, res) {
     if (!userId) {
         return res.redirect("/login");
     }
-
-
+    
+    // Obtengo el carrito almacenado previamente en la sesión. Si todavía no fue creado, su valor será undefined, pues
+    //la funcion session permite agregar atributos "al vuelo" a la session
     const cart =
-        cartsModel.getByUserId(userId);
+        req.session.cart;
 
-
+    //Se almacenan en la constante items los productos que se encuentran en el carrito, si el carrito no tiene
+    //productos, se asigna un arreglo vacío.
     const items = cart
         ? cart.items.map(item => {
 
@@ -77,7 +76,6 @@ function addProduct(req, res) {
         req.session.userId;
 
 
-    // Si no inició sesión, lo mandamos al login
     if (!userId) {
         return res.redirect("/login");
     }
@@ -104,27 +102,44 @@ function addProduct(req, res) {
     }
 
 
-    // Validación de cantidad
-    if (
-        !quantity
-        ||
-        quantity < 1
-        ||
-        quantity > product.stock
-    ) {
-
-        return res
-            .status(400)
-            .send("Cantidad no válida");
-
+    // Si todavía no existe un carrito en la sesión, se crea uno asociado al usuario logueado.
+    if (!req.session.cart) {
+        req.session.cart = {
+            userId: userId,
+            items: []
+        };
     }
 
 
-    cartsModel.addProduct(
-        userId,
-        productId,
-        quantity
-    );
+    const existingItem =
+        req.session.cart.items.find(
+            item =>
+                item.productId === productId
+        );
+
+
+    // Si el producto ya estaba en el carrito,
+    // aumentamos su cantidad.
+    if (existingItem) {
+
+        existingItem.quantity +=
+            quantity;
+
+    }
+
+    // Si el producto no estaba en el carrito,
+    // lo agregamos.
+    else {
+
+        req.session.cart.items.push({
+
+            productId: productId,
+
+            quantity: quantity
+
+        });
+
+    }
 
 
     res.redirect("/cart");
@@ -190,17 +205,43 @@ function updateQuantity(req, res) {
     }
 
 
-    cartsModel.updateQuantity(
-        userId,
-        productId,
-        quantity
-    );
+    // Obtengo el carrito almacenado en la sesión
+    const cart =
+        req.session.cart;
+
+
+    if (!cart) {
+
+        return res.redirect("/cart");
+
+    }
+
+
+    // Busco dentro del carrito el producto que se desea modificar
+    const item =
+        cart.items.find(
+            item =>
+                item.productId === productId
+        );
+
+
+    if (!item) {
+
+        return res
+            .status(404)
+            .send("El producto no se encuentra en el carrito");
+
+    }
+
+
+    // Modifico directamente la cantidad almacenada en la sesión
+    item.quantity =
+        quantity;
 
 
     res.redirect("/cart");
 
 }
-
 
 
 // ======================================================
@@ -222,12 +263,45 @@ function removeProduct(req, res) {
         Number(req.params.id);
 
 
-    cartsModel.removeProduct(
-        userId,
-        productId
+    // Obtengo el carrito almacenado en la sesión
+    const cart =
+        req.session.cart;
+
+    //si no existe el carrito, redirijo al usuario a la vista del carrito, que estará vacía
+    if (!cart) {
+
+        return res.redirect("/cart");
+
+    }
+
+
+    // Busco dentro del carrito el producto que se desea eliminar
+    const item =
+        cart.items.find(
+            item =>
+                item.productId === productId
+        );
+
+
+    if (!item) {
+
+        return res
+            .status(404)
+            .send("El producto no se encuentra en el carrito");
+
+    }
+
+
+    // Elimino el producto del carrito, filtrando los items que no coincidan con el productId del producto a eliminar
+    //es decir, si se encuentra una coincidencia, se elimina el producto del carrito, y si no se encuentra, el carrito
+    // permanece igual
+    cart.items = cart.items.filter(
+        item =>
+            item.productId !== productId
     );
 
-
+    //uso redirect para redirigir al usuario a la vista del carrito, que ahora estará actualizada sin el producto
+    //eliminado
     res.redirect("/cart");
 
 }

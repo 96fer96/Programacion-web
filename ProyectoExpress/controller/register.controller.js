@@ -50,13 +50,40 @@ async function registerUser(req, res, next) {
 
         }
 
+        //Declaro expresiones regulares mediante la funcion test(), la cual, aplicada a una determinada cadena de 
+        // texto, devuelve true si la cadena cumple con el patrón definido por la expresión regular, o false en caso contrario.
+        const hasUppercase =
+        /[A-Z]/.test(password);
+
+        const hasLowercase =
+            /[a-z]/.test(password);
+
+        const hasNumber =
+            /[0-9]/.test(password);
+
+        const hasSpecialCharacter =
+            /[^a-zA-Z0-9]/.test(password);
+
+        const hasForbiddenPassword =
+            /(1234|password|qwerty)/i.test(password);
+
+        if (!hasUppercase || !hasLowercase || !hasNumber || !hasSpecialCharacter || password.length < 8) {
+            return res.render("pages/register", {
+                error: "La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una letra minúscula, un número y un carácter especial."
+            })
+        }
+
+        if (hasForbiddenPassword) {
+            return res.render("pages/register", {
+                error: "La contraseña no puede contener palabras comunes como 'password', 'mi nombre', 'mi usuario/username', '1234' o 'qwerty'."
+            });
+        }
 
         // Buscamos si el usuario ya existe
         const existingUser =
             await usersModel.findByUsername(
                 username
             );
-
 
         if (existingUser) {
 
@@ -66,16 +93,12 @@ async function registerUser(req, res, next) {
 
         }
 
-        
-
-
         // Encriptamos la contraseña
         const hashedPassword =
             await bcrypt.hash(
                 password,
                 10
             );
-
 
         // Creamos el nuevo usuario
         const newUser = {

@@ -1381,3 +1381,23 @@ HEADER
     background: #444;
     color: white;
 }
+
+/* ======================================================
+LOGOUT
+====================================================== */
+
+.logout-form {
+    margin: 0;
+}
+
+
+.logout-button {
+    background: none;
+    border: none;
+    padding: 0;
+
+    font: inherit;
+    color: inherit;
+
+    cursor: pointer;
+}
