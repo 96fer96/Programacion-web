@@ -1,23 +1,23 @@
+
+//Importo el módulo express para poder crear la aplicación web y definir rutas, middleware y otras configuraciones.
 const express = require("express");
 
 const path = require("path");
 
+//express() sirve para crear una instancia de la aplicación Express, que es un objeto que representa la aplicación web y permite 
+// definir rutas, middleware y otras configuraciones. A diferencia de require("express"), que solo importa el módulo de Express, 
+// express() crea una instancia específica de la aplicación que se puede configurar y ejecutar.
 const app = express();
 
 const port = 3000;
 
-const router = require("./Router/router.js");
+const router = require("./router/router.js");
 
 const session = require("express-session");
 
-const usersModel = require("./model/users.model");
-
-const cartsModel = require("./model/carts.model");
+const viewDataMiddleware = require("./middleware/viewdata.middleware.js");
 
 app.set("view engine", "ejs");
-
-
-
 
 //asocio la constante con la ruta de la carpeta public, esta diciendo: “Para las peticiones que comiencen desde /,
 //utilizá los archivos estáticos que se encuentran dentro de la carpeta assets.”
@@ -28,7 +28,11 @@ app.use(
 );
 
 
-// Leer formularios HTML
+//Esta línea de código configura un middleware en la aplicación Express para procesar datos enviados a través de
+// formularios HTML utilizando el método POST.
+//El middleware express.urlencoded() se utiliza para analizar los datos codificados en la URL 
+// (application/x-www-form-urlencoded) que se envían desde un formulario HTML.
+//La opción extended: true permite analizar datos complejos, como objetos y matrices, en lugar de solo cadenas simples.
 app.use(
     express.urlencoded({
         extended: true
@@ -44,58 +48,7 @@ app.use(
 );
 
 // Middleware para pasar información al carrito y al usuario logueado a todas las vistas
-app.use(async (req, res, next) => {
-
-    res.locals.currentUser = null;
-    res.locals.cartCount = 0;
-
-
-    try {
-
-        // Si hay un usuario logueado, tomo su id y busco el usuario y su carrito
-        if (req.session.userId) {
-
-            const user =
-                await usersModel.getById(
-                    req.session.userId
-                );
-
-
-            const cart =
-                cartsModel.getByUserId(
-                    req.session.userId
-                );
-
-
-            res.locals.currentUser = user;
-
-
-            //Si el usuario tiene un carrito, calculo la cantidad de productos y la paso a las vistas
-            if (cart) {
-
-                res.locals.cartCount =
-                    cart.items.reduce(
-                        (total, item) =>
-                            total + item.quantity,
-                        0
-                    );
-
-            }
-
-        }
-
-
-        //Si no hubiera next, el flujo de la aplicación se detendría aquí y no se ejecutaría el siguiente middleware o ruta.
-        next();
-
-
-    } catch (error) {
-
-        next(error);
-
-    }
-
-});
+app.use(viewDataMiddleware.showCartAndUser);
 
 
 //asocio la constante con la ruta raiz, esta diciendo: “Para las peticiones que comiencen desde /,
