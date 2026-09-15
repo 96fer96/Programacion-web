@@ -2,7 +2,13 @@ const usersModel = require("../model/users.model");
 const bcrypt = require("bcryptjs");
 
 function showLogin(req, res) {
-    res.render("pages/login");
+    res.render("pages/login",
+        //Indico explicitamente que no quiero usar el layout principal para esta vista, sino que quiero renderizarla 
+        //sin ningún layout.
+        {
+            layout: false
+        }
+    );
 }
 
 async function processLogin(req, res, next) {

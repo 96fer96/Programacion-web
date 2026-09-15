@@ -18,8 +18,13 @@ const bcrypt =
 
 function showRegister(req, res) {
 
-    res.render("pages/register");
-
+    res.render("pages/register",
+        //Indico explicitamente que no quiero usar el layout principal para esta vista, sino que quiero renderizarla 
+        //sin ningún layout.
+        {
+            layout: false
+        }
+    );
 }
 
 
@@ -45,6 +50,7 @@ async function registerUser(req, res, next) {
         if (password !== confirmPassword) {
 
             return res.render("pages/register", {
+                layout: false,
                 error: "Las contraseñas no coinciden"
             });
 
