@@ -101,8 +101,9 @@ function detail(req, res) {
     }
 
 
-    // Buscamos productos de la misma categoría
-    // para mostrarlos como sugerencias.
+    // Buscamos productos de la misma categoría para mostrarlos como sugerencias, pasandoselos a la vista de detalle
+    // del producto. para que opere con los datos enviados en suggestedProducts, se filtran los productos que no sean
+    // el mismo producto que se está mostrando y que pertenezcan a la misma categoría.
     const suggestedProducts =
         productsModel
             .getAll()
@@ -112,7 +113,7 @@ function detail(req, res) {
                     &&
                     suggested.category === product.category
             )
-            .slice(0, 3);
+            .slice(0, 4); // Limitamos a 4 productos sugeridos
 
 
     res.render("pages/product", {

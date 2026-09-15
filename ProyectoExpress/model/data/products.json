@@ -6,7 +6,8 @@
         "stock": 15,
         "category": "electronica",
         "description": "Auriculares Bluetooth con micrófono integrado y batería recargable.",
-        "image": "/img/products/auriculares.jpg"
+        "image": "/img/products/auriculares.jpg",
+        "pedidos": 4
     },
     {
         "id": 2,
@@ -15,7 +16,8 @@
         "stock": 10,
         "category": "electronica",
         "description": "Teclado mecánico con iluminación RGB y conexión USB.",
-        "image": "/img/products/teclado.jpg"
+        "image": "/img/products/teclado.jpg",
+        "pedidos": 2
     },
     {
         "id": 3,
@@ -24,7 +26,8 @@
         "stock": 18,
         "category": "electronica",
         "description": "Mouse óptico de alta precisión con botones configurables.",
-        "image": "/img/products/mouse-gamer.jpg"
+        "image": "/img/products/mouse-gamer.jpg",
+        "pedidos": 5
     },
 
     {
@@ -34,7 +37,8 @@
         "stock": 40,
         "category": "alimentos",
         "description": "Paquete de fideos secos de trigo de 500 gramos.",
-        "image": "/img/products/fideos.jpg"
+        "image": "/img/products/fideos.jpg",
+        "pedidos": 17
     },
     {
         "id": 5,
@@ -43,7 +47,8 @@
         "stock": 35,
         "category": "alimentos",
         "description": "Arroz largo fino seleccionado en presentación de 1 kilogramo.",
-        "image": "/img/products/arroz.jpg"
+        "image": "/img/products/arroz.jpg",
+        "pedidos": 13
     },
     {
         "id": 6,
@@ -52,7 +57,8 @@
         "stock": 25,
         "category": "alimentos",
         "description": "Galletitas dulces con chips de chocolate.",
-        "image": "/img/products/galletitas.jpg"
+        "image": "/img/products/galletitas.jpg",
+        "pedidos": 6
     },
 
     {
@@ -62,7 +68,8 @@
         "stock": 50,
         "category": "bebidas",
         "description": "Agua mineral sin gas en botella de 1,5 litros.",
-        "image": "/img/products/agua-mineral.jpg"
+        "image": "/img/products/agua-mineral.jpg",
+        "pedidos": 3
     },
     {
         "id": 8,
@@ -71,7 +78,8 @@
         "stock": 30,
         "category": "bebidas",
         "description": "Jugo de naranja listo para consumir en envase de 1 litro.",
-        "image": "/img/products/jugo-naranja.jpg"
+        "image": "/img/products/jugo-naranja.jpg",
+        "pedidos": 13
     },
     {
         "id": 9,
@@ -80,7 +88,8 @@
         "stock": 45,
         "category": "bebidas",
         "description": "Bebida gaseosa sabor cola en botella de 2,25 litros.",
-        "image": "/img/products/gaseosa-cola.jpg"
+        "image": "/img/products/gaseosa-cola.jpg",
+        "pedidos": 9
     },
 
     {
@@ -90,7 +99,8 @@
         "stock": 20,
         "category": "indumentaria",
         "description": "Remera deportiva de tela liviana y respirable.",
-        "image": "/img/products/remera-deportiva.jpg"
+        "image": "/img/products/remera-deportiva.jpg",
+        "pedidos": 6
     },
     {
         "id": 11,
@@ -99,16 +109,18 @@
         "stock": 14,
         "category": "indumentaria",
         "description": "Pantalón de jean clásico para uso diario.",
-        "image": "/img/products/jean.jpg"
+        "image": "/img/products/jean.jpg",
+        "pedidos": 3
     },
     {
         "id": 12,
         "name": "Campera urbana",
         "price": 64999,
-        "stock": 8,
+        "stock": 0,
         "category": "indumentaria",
         "description": "Campera urbana liviana con cierre frontal y bolsillos.",
-        "image": "/img/products/campera.jpg"
+        "image": "/img/products/campera.jpg",
+        "pedidos": 9
     },
 
     {
@@ -118,7 +130,8 @@
         "stock": 22,
         "category": "juegos",
         "description": "Juego de cartas para reuniones familiares y grupos de amigos.",
-        "image": "/img/products/cartas.jpg"
+        "image": "/img/products/cartas.jpg",
+        "pedidos": 5
     },
     {
         "id": 14,
@@ -127,7 +140,8 @@
         "stock": 11,
         "category": "juegos",
         "description": "Juego de ajedrez con tablero plegable y piezas incluidas.",
-        "image": "/img/products/ajedrez.jpg"
+        "image": "/img/products/ajedrez.jpg",
+        "pedidos": 3
     },
     {
         "id": 15,
@@ -136,7 +150,8 @@
         "stock": 13,
         "category": "juegos",
         "description": "Control inalámbrico compatible con PC y dispositivos móviles.",
-        "image": "/img/products/joystick.jpg"
+        "image": "/img/products/joystick.jpg",
+        "pedidos": 6
     },
 
     {
@@ -146,7 +161,8 @@
         "stock": 25,
         "category": "automotor",
         "description": "Adaptador de carga USB para toma de 12 V del automóvil.",
-        "image": "/img/products/cargador-auto.jpg"
+        "image": "/img/products/cargador-auto.jpg",
+        "pedidos": 1
     },
     {
         "id": 17,
@@ -155,7 +171,8 @@
         "stock": 9,
         "category": "automotor",
         "description": "Aspiradora compacta portátil para limpieza interior del vehículo.",
-        "image": "/img/products/aspiradora-auto.jpg"
+        "image": "/img/products/aspiradora-auto.jpg",
+        "pedidos": 2
     },
     {
         "id": 18,
@@ -164,7 +181,8 @@
         "stock": 16,
         "category": "automotor",
         "description": "Organizador plegable con compartimientos para el baúl.",
-        "image": "/img/products/organizador-auto.jpg"
+        "image": "/img/products/organizador-auto.jpg",
+        "pedidos": 7
     },
 
     {
@@ -174,7 +192,8 @@
         "stock": 17,
         "category": "hogar",
         "description": "Lámpara de mesa moderna para escritorio o dormitorio.",
-        "image": "/img/products/lampara.jpg"
+        "image": "/img/products/lampara.jpg",
+        "pedidos": 9
     },
     {
         "id": 20,
@@ -183,7 +202,8 @@
         "stock": 12,
         "category": "hogar",
         "description": "Juego de sábanas de dos plazas con sábana ajustable y fundas.",
-        "image": "/img/products/sabanas.jpg"
+        "image": "/img/products/sabanas.jpg",
+        "pedidos": 20
     },
     {
         "id": 21,
@@ -192,7 +212,8 @@
         "stock": 15,
         "category": "hogar",
         "description": "Set de utensilios resistentes al calor para cocina.",
-        "image": "/img/products/utensilios.jpg"
+        "image": "/img/products/utensilios.jpg",
+        "pedidos": 4
     },
 
     {
@@ -202,7 +223,8 @@
         "stock": 18,
         "category": "otros",
         "description": "Mochila de uso diario con múltiples compartimientos.",
-        "image": "/img/products/mochila.jpg"
+        "image": "/img/products/mochila.jpg",
+        "pedidos": 3
     },
     {
         "id": 23,
@@ -211,7 +233,8 @@
         "stock": 20,
         "category": "otros",
         "description": "Botella térmica reutilizable para bebidas frías y calientes.",
-        "image": "/img/products/botella-termica.jpg"
+        "image": "/img/products/botella-termica.jpg",
+        "pedidos": 0
     },
     {
         "id": 24,
@@ -220,6 +243,7 @@
         "stock": 14,
         "category": "otros",
         "description": "Paraguas compacto con sistema de apertura automática.",
-        "image": "/img/products/paraguas.jpg"
+        "image": "/img/products/paraguas.jpg",
+        "pedidos": 7
     }
 ]

@@ -119,7 +119,7 @@
 
         </section>
         <!-- =========================
-            PRODUCTOS RECOMENDADOS
+            PRODUCTOS MAS PEDIDOS
             ========================= -->
 
         <section
@@ -128,13 +128,21 @@
         >
 
             <h2 id="products-title">
-                Te puede interesar
+                Mas pedidos
             </h2>
 
 
             <ul class="products-grid">
 
-                <% products.forEach(product => { %>
+                <!-- Se copian a un nuevo arreglo los 10 productos con mayor cantidad de pedidos-->
+                <%
+                    const masPedidos =
+                        [...products]
+                            .sort((a, b) => b.pedidos - a.pedidos)
+                            .slice(0, 10);
+
+                    masPedidos.forEach(product => {
+                %>
 
                     <li>
 
@@ -180,7 +188,7 @@
         </section>
 
         <!-- =========================
-            PRODUCTOS
+            PRODUCTOS RECOMENDADOS
         ========================= -->
 
         <section
@@ -189,14 +197,17 @@
         >
 
             <h2 id="products-title">
-                Los mas vendidos
+                Te puede interesar
             </h2>
 
 
             <ul class="products-grid">
 
-
-                <% products.forEach(product => { %>
+                <!-- Se copian a un nuevo arreglo 5 productos aleatorios, para mostrarlos en la sección 
+                "Te puede interesar" -->
+                <%  const sugeridos = [...products].sort(() => Math.random() - 0.5).slice(0, 5);
+                    sugeridos.forEach(product => { 
+                %>
 
 
                     <li>

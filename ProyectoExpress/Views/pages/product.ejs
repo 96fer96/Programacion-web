@@ -227,7 +227,8 @@
 
 
         <!-- PRODUCTOS RELACIONADOS -->
-
+        <!-- Desde el products.controller se pasa como argumento suggested products cuando el usuario visita el 
+        detalle de un producto, de modo que el router renderiza la vista de product.js y provee el id del producto seleccionado -->
         <% if (
             typeof suggestedProducts !== "undefined"
             &&
@@ -316,10 +317,24 @@
             </section>
 
 
+        <% } else { %>
+
+
+            <section
+                class="related-products-section"
+                aria-labelledby="related-products-title"
+            >
+
+                <h2 id="related-products-title">
+
+                    No hay productos relacionados para mostrar
+
+                </h2>
+
+            </section>
+
+
         <% } %>
-
-
-
         <!-- CATEGORÍAS -->
 
         <section

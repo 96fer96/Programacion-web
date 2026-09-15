@@ -1401,3 +1401,94 @@ LOGOUT
 
     cursor: pointer;
 }
+
+/* ======================================================
+CHECKOUT
+====================================================== */
+
+.checkout-page {
+    min-height: 65vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 20px;
+}
+
+
+.checkout-card {
+    width: 100%;
+    max-width: 500px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    background: white;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 4px 18px
+        rgba(0, 0, 0, 0.08);
+}
+
+
+.checkout-icon {
+    font-size: 48px;
+
+    margin-bottom: 20px;
+}
+
+
+.checkout-card h1 {
+    margin-bottom: 12px;
+}
+
+
+.checkout-card p {
+    margin-bottom: 30px;
+
+    font-size: 18px;
+}
+
+
+.checkout-actions {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+
+.checkout-button {
+    padding: 12px 20px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    background: #444;
+    color: white;
+
+    font-weight: 500;
+}
+
+
+.checkout-button:hover {
+    opacity: 0.9;
+}
+
+
+.checkout-button-secondary {
+    background: transparent;
+
+    color: #444;
+
+    border: 1px solid #444;
+}
