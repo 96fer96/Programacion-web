@@ -1,14 +1,4 @@
-// ======================================================
-// MODELOS
-// ======================================================
-
-const cartsModel =
-    require("../model/carts.model");
-
-const productsModel =
-    require("../model/products.model");
-
-
+const cartsService = require('../services/carts.service')
 
 // ======================================================
 // MOSTRAR CARRITO
@@ -23,40 +13,15 @@ function showCart(req, res) {
     if (!userId) {
         return res.redirect("/login");
     }
-
-
+    
+    // Obtengo el carrito almacenado previamente en la sesión. Si todavía no fue creado, su valor será undefined, pues
+    //la funcion session permite agregar atributos "al vuelo" a la session
     const cart =
-        cartsModel.getByUserId(userId);
+        req.session.cart;
 
+    const items = cartsService.getItems(cart);
 
-    const items = cart
-        ? cart.items.map(item => {
-
-            const product =
-                productsModel.getById(
-                    item.productId
-                );
-
-
-            return {
-                product: product,
-                quantity: item.quantity,
-                subtotal:
-                    product.price *
-                    item.quantity
-            };
-
-        })
-        : [];
-
-
-    const total =
-        items.reduce(
-            (sum, item) =>
-                sum + item.subtotal,
-            0
-        );
-
+    const total = cartsService.getTotal(items);
 
     res.render("pages/cart", {
         items: items,
@@ -71,166 +36,274 @@ function showCart(req, res) {
 // AGREGAR PRODUCTO AL CARRITO
 // ======================================================
 
-function addProduct(req, res) {
+function addProduct(req, res, next) {
 
-    const userId =
-        req.session.userId;
+    try {
+
+        const userId =
+            req.session.userId;
 
 
-    // Si no inició sesión, lo mandamos al login
-    if (!userId) {
-        return res.redirect("/login");
+        // Verificar que haya un usuario logueado
+        if (!userId) {
+
+            return res.redirect("/login");
+
+        }
+
+
+        const productId =
+            Number(req.params.id);
+
+
+        const quantity =
+            Number(req.body.quantity);
+
+
+        // Si todavía no existe un carrito en la sesión,
+        // se crea uno asociado al usuario logueado.
+        if (!req.session.cart) {
+
+            req.session.cart =
+                cartsService.createCart(
+                    userId
+                );
+
+        }
+
+
+        // Delegamos al servicio la lógica necesaria
+        // para agregar el producto al carrito.
+        const result =
+            cartsService.addProduct(
+                req.session.cart,
+                productId,
+                quantity
+            );
+
+
+        if (!result.success) {
+
+
+            if (
+                result.error ===
+                "INVALID_QUANTITY"
+            ) {
+
+                return res
+                    .status(400)
+                    .send(
+                        "Cantidad no válida"
+                    );
+
+            }
+
+
+            if (
+                result.error ===
+                "PRODUCT_NOT_FOUND"
+            ) {
+
+                return res
+                    .status(404)
+                    .send(
+                        "Producto no encontrado"
+                    );
+
+            }
+
+
+            if (
+                result.error ===
+                "INSUFFICIENT_STOCK"
+            ) {
+
+                return res
+                    .status(400)
+                    .send(
+                        "La cantidad supera el stock disponible"
+                    );
+
+            }
+
+        }
+
+
+        res.redirect("/cart");
+
+
+    } catch (error) {
+
+        next(error);
+
     }
-
-
-    const productId =
-        Number(req.params.id);
-
-
-    const quantity =
-        Number(req.body.quantity);
-
-
-    const product =
-        productsModel.getById(productId);
-
-
-    if (!product) {
-
-        return res
-            .status(404)
-            .send("Producto no encontrado");
-
-    }
-
-
-    // Validación de cantidad
-    if (
-        !quantity
-        ||
-        quantity < 1
-        ||
-        quantity > product.stock
-    ) {
-
-        return res
-            .status(400)
-            .send("Cantidad no válida");
-
-    }
-
-
-    cartsModel.addProduct(
-        userId,
-        productId,
-        quantity
-    );
-
-
-    res.redirect("/cart");
 
 }
-
-
 
 // ======================================================
 // MODIFICAR CANTIDAD DEL CARRITO
 // ======================================================
 
-function updateQuantity(req, res) {
+function updateQuantity(req, res, next) {
 
-    const userId =
-        req.session.userId;
+    try {
+
+        const userId =
+            req.session.userId;
 
 
-    // Verificar que haya un usuario logueado
-    if (!userId) {
-        return res.redirect("/login");
+        // Verificar que haya un usuario logueado
+        if (!userId) {
+
+            return res.redirect("/login");
+
+        }
+
+
+        const productId =
+            Number(req.params.id);
+
+
+        const quantity =
+            Number(req.body.quantity);
+
+
+        // Obtengo el carrito almacenado en la sesión
+        const cart =
+            req.session.cart;
+
+
+        if (!cart) {
+
+            return res.redirect("/cart");
+
+        }
+
+
+        // Delegamos al servicio la lógica necesaria para
+        // modificar la cantidad del producto en el carrito.
+        const result =
+            cartsService.updateQuantity(
+                cart,
+                productId,
+                quantity
+            );
+
+
+        if (!result.success) {
+
+
+            if (
+                result.error ===
+                "INVALID_QUANTITY"
+            ) {
+
+                return res
+                    .status(400)
+                    .send(
+                        "Cantidad no válida"
+                    );
+
+            }
+
+
+            if (
+                result.error ===
+                "PRODUCT_NOT_FOUND"
+            ) {
+
+                return res
+                    .status(404)
+                    .send(
+                        "Producto no encontrado"
+                    );
+
+            }
+
+
+            if (
+                result.error ===
+                "INSUFFICIENT_STOCK"
+            ) {
+
+                return res
+                    .status(400)
+                    .send(
+                        "La cantidad supera el stock disponible"
+                    );
+
+            }
+
+
+            if (
+                result.error ===
+                "ITEM_NOT_FOUND"
+            ) {
+
+                return res
+                    .status(404)
+                    .send(
+                        "El producto no se encuentra en el carrito"
+                    );
+
+            }
+
+        }
+
+        res.redirect("/cart");
+
+    } catch (error) {
+
+        next(error);
+
     }
-
-
-    const productId =
-        Number(req.params.id);
-
-
-    const quantity =
-        Number(req.body.quantity);
-
-
-    // Validación básica
-    if (!quantity || quantity < 1) {
-
-        return res
-            .status(400)
-            .send("Cantidad no válida");
-
-    }
-
-
-    const product =
-        productsModel.getById(productId);
-
-
-    if (!product) {
-
-        return res
-            .status(404)
-            .send("Producto no encontrado");
-
-    }
-
-
-    // No permitir superar el stock
-    if (quantity > product.stock) {
-
-        return res
-            .status(400)
-            .send("La cantidad supera el stock disponible");
-
-    }
-
-
-    cartsModel.updateQuantity(
-        userId,
-        productId,
-        quantity
-    );
-
-
-    res.redirect("/cart");
 
 }
-
 
 
 // ======================================================
 // ELIMINAR PRODUCTO DEL CARRITO
 // ======================================================
 
-function removeProduct(req, res) {
+function removeProduct(req, res, next) {
+    try {
+        const userId =
+            req.session.userId;
 
-    const userId =
-        req.session.userId;
+
+        // Verificar que haya un usuario logueado
+        if (!userId) {
+            return res.redirect("/login");
+        }
+
+        const productId = Number(req.params.id);
+
+        const cart = req.session.cart;
+
+        if (!cart) {
+            return res.redirect("/cart")
+        }
+
+        const result = cartsService.removeProduct(cart, productId);
+
+        if (!result.success) {
+            if (result.error === "ITEM_NOT_FOUND") {
+                return res
+                        .status(404)
+                        .send(
+                            "El producto no se encuentra en el carrito"
+                        );
+            }
+        }
+
+        res.redirect("/cart");
 
 
-    if (!userId) {
-        return res.redirect("/login");
+    } catch (error) {
+        next(error);
     }
-
-
-    const productId =
-        Number(req.params.id);
-
-
-    cartsModel.removeProduct(
-        userId,
-        productId
-    );
-
-
-    res.redirect("/cart");
-
 }
+
 
 
 

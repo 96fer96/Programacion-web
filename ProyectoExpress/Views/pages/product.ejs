@@ -1,41 +1,15 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        <%= product.name %> | MiEcommerce
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="/css/styles.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
-
-</head>
-
-
-<body>
-
-
-    <!-- HEADER -->
-
-    <%- include("../partials/header") %>
-
-
     <main class="product-detail-page">
+
+    <!-- CATEGORÍAS SUPERIORES -->
+
+        <section
+            class="top-categories"
+            aria-label="Categorías de productos"
+        >
+
+            <%- include("../partials/categories") %>
+
+        </section>
 
 
         <!-- NAVEGACIÓN -->
@@ -227,7 +201,8 @@
 
 
         <!-- PRODUCTOS RELACIONADOS -->
-
+        <!-- Desde el products.controller se pasa como argumento suggested products cuando el usuario visita el 
+        detalle de un producto, de modo que el router renderiza la vista de product.js y provee el id del producto seleccionado -->
         <% if (
             typeof suggestedProducts !== "undefined"
             &&
@@ -316,10 +291,24 @@
             </section>
 
 
+        <% } else { %>
+
+
+            <section
+                class="related-products-section"
+                aria-labelledby="related-products-title"
+            >
+
+                <h2 id="related-products-title">
+
+                    No hay productos relacionados para mostrar
+
+                </h2>
+
+            </section>
+
+
         <% } %>
-
-
-
         <!-- CATEGORÍAS -->
 
         <section
@@ -333,8 +322,3 @@
 
 
     </main>
-
-
-</body>
-
-</html>

@@ -1,80 +1,72 @@
-// ======================================================
-// MODELO DE PRODUCTOS
-// ======================================================
-
-const productsModel =
-    require("../model/products.model");
-
-
+const productsService = require('../services/products.service');
 
 // ======================================================
 // TODOS LOS PRODUCTOS
 // ======================================================
 
-function list(req, res) {
+function list(req, res, next) {
 
-    const category = req.query.category;
+    try {
 
-    const query = req.query.q
-        ? req.query.q.trim()
-        : "";
-
-    let products;
+        const category =
+            req.query.category;
 
 
-    // Si existe una búsqueda
-    if (query) {
+        const query =
+            req.query.q
+                ? req.query.q.trim()
+                : "";
 
-        products =
-            productsModel.search(query);
+
+        const order =
+            req.query.sort
+                ? req.query.sort.trim()
+                : "";
+
+
+        const products =
+            productsService.list(
+                category,
+                query,
+                order
+            );
+
+
+        const categoryNames =
+            productsService.getCategoryNames();
+
+
+        // Renderizamos la vista de productos, la cual puede recibir un array de productos,
+        // una categoría seleccionada, un término de búsqueda y un criterio de ordenamiento.
+        res.render("pages/products", {
+
+            products: products,
+
+            selectedCategory:
+                category
+                    ? categoryNames[category]
+                    : null,
+
+            category:
+                category,
+
+            searchTerm:
+                query,
+
+            sortOrder:
+                order
+
+        });
+
+
+    } catch (error) {
+
+        next(error);
 
     }
-
-    // Si existe una categoría
-    else if (category) {
-
-        products =
-            productsModel.getByCategory(category);
-
-    }
-
-    // Si no hay búsqueda ni categoría
-    else {
-
-        products =
-            productsModel.getAll();
-
-    }
-
-
-    const categoryNames = {
-        electronica: "Electrónica",
-        alimentos: "Alimentos",
-        bebidas: "Bebidas",
-        indumentaria: "Indumentaria",
-        juegos: "Juegos",
-        automotor: "Automotor",
-        hogar: "Hogar",
-        otros: "Otros"
-    };
-
-
-    // Renderizamos la vista de productos, la cual puede recibir un array de productos,
-    // una categoría seleccionada y un término de búsqueda.
-    res.render("pages/products", {
-
-        products: products,
-
-        selectedCategory:
-            category
-                ? categoryNames[category]
-                : null,
-
-        searchTerm: query
-
-    });
 
 }
+
 
 
 
@@ -82,50 +74,76 @@ function list(req, res) {
 // DETALLE DE UN PRODUCTO
 // ======================================================
 
-function detail(req, res) {
+function detail(req, res, next) {
 
-    const id =
-        Number(req.params.id);
+    try {
+
+        // Normalizamos y validamos el ID recibido
+        // como parámetro desde la URL.
+        const id =
+            productsService.normalizeId(
+                req.params.id
+            );
 
 
-    const product =
-        productsModel.getById(id);
+        // El parámetro recibido no representa
+        // un ID válido.
+        if (id === null) {
+
+            //este error es para un programador, de modo que no es necesario
+            //renderizar una vista ejs, porque creo que no es posible que un 
+            //producto tenga una id NaN
+            return res
+                .status(400)
+                .send(
+                    "ID de producto no válido"
+                );
+
+        }
 
 
-    if (!product) {
+        // Una vez validado el ID, buscamos
+        // el producto correspondiente.
+        const product =
+            productsService.getProductById(
+                id
+            );
 
-        return res
-            .status(404)
-            .send("Producto no encontrado");
 
+        // Si el producto solicitado no existe,
+        // respondemos con un error 404.
+        if (!product) {
+
+            return res
+                .status(404)
+                .render(
+                    "pages/error404"
+                );
+
+        }
+
+
+        const suggestedProducts =
+            productsService.getSuggestedProducts(
+                product
+            );
+
+
+        res.render("pages/product", {
+
+            product: product,
+
+            suggestedProducts:
+                suggestedProducts
+
+        });
+
+
+    } catch (error) {
+
+        next(error);
     }
-
-
-    // Buscamos productos de la misma categoría
-    // para mostrarlos como sugerencias.
-    const suggestedProducts =
-        productsModel
-            .getAll()
-            .filter(
-                suggested =>
-                    suggested.id !== product.id
-                    &&
-                    suggested.category === product.category
-            )
-            .slice(0, 3);
-
-
-    res.render("pages/product", {
-
-        product: product,
-
-        suggestedProducts:
-            suggestedProducts
-
-    });
-
 }
-
 
 
 // ======================================================

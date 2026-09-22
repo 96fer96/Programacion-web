@@ -19,6 +19,20 @@ const viewDataMiddleware = require("./middleware/viewdata.middleware.js");
 
 app.set("view engine", "ejs");
 
+const expressLayouts =
+    require("express-ejs-layouts");
+
+// Utilizo express-ejs-layouts para definir una estructura común para las vistas de la aplicación.
+app.use(expressLayouts);
+
+
+//Cada vez que se renderice una vista EJS, se envuelve por defecto con el layout principal definido en layouts/main.ejs. 
+//Esto permite mantener una apariencia consistente en todas las páginas de la aplicación.
+app.set(
+    "layout",
+    "layouts/main"
+);
+
 //asocio la constante con la ruta de la carpeta public, esta diciendo: “Para las peticiones que comiencen desde /,
 //utilizá los archivos estáticos que se encuentran dentro de la carpeta assets.”
 app.use(

@@ -17,7 +17,6 @@ router.get(
     productsController.list
 );
 
-
 // Detalle de un producto
 router.get(
     "/products/:id",

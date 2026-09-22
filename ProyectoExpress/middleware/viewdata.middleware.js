@@ -5,7 +5,6 @@
 // Agrega los datos necesarios a res.locals, que es un objeto que contiene variables locales disponibles para la vista.
 
 const usersModel = require("../model/users.model");
-const cartsModel = require("../model/carts.model");
 
 async function showCartAndUser(req, res, next) {
     
@@ -25,13 +24,9 @@ async function showCartAndUser(req, res, next) {
 
 
             const cart =
-                cartsModel.getByUserId(
-                    req.session.userId
-                );
-
+                await req.session.cart;
 
             res.locals.currentUser = user;
-
 
             //Si el usuario tiene un carrito, calculo la cantidad de productos y la paso a las vistas
             if (cart) {

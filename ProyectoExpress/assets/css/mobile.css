@@ -382,3 +382,57 @@
     }
 
 }
+
+/* =========================
+   LOGOUT MOBILE
+========================= */
+
+.mobile-logout-form {
+    margin: 0;
+}
+
+
+.mobile-logout-button {
+    background: none;
+    border: none;
+    padding: 0;
+
+    font: inherit;
+    color: inherit;
+
+    cursor: pointer;
+}
+
+
+.mobile-logout-button:hover {
+    text-decoration: underline;
+}
+
+/* ======================================================
+   CHECKOUT MOBILE
+====================================================== */
+
+@media (max-width: 768px) {
+
+    .checkout-page {
+        padding: 25px 15px;
+    }
+
+
+    .checkout-card {
+        padding: 30px 20px;
+    }
+
+
+    .checkout-actions {
+        flex-direction: column;
+    }
+
+
+    .checkout-button {
+        width: 100%;
+
+        text-align: center;
+    }
+
+}
