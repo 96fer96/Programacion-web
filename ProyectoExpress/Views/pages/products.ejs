@@ -1,186 +1,352 @@
-
-    <main>
-
-
-        <!-- CATEGORÍAS -->
-
-        <section
-            class="top-categories"
-            aria-label="Categorías de productos"
-        >
-
-            <%- include("../partials/categories") %>
-
-        </section>
+<main>
 
 
+    <!-- ======================================================
+        CATEGORÍAS
+    ======================================================= -->
 
-        <!-- LISTADO DE PRODUCTOS -->
+    <section
+        class="top-categories"
+        aria-label="Categorías de productos"
+    >
 
-        <section
-            class="products-section"
-            aria-labelledby="products-title"
-        >
-<!--
-si se solicita un query con un término de búsqueda, se muestra un título indicando los resultados de la búsqueda
-sino, se fija si se solicitó una categoría, y se muestra un título indicando la categoría seleccionada
-si no se solicitó ni búsqueda ni categoría, se muestra un título indicando que se muestran todos los productos-->
+        <%- include("../partials/categories") %>
+
+    </section>
+
+
+
+    <!-- ======================================================
+        LISTADO DE PRODUCTOS
+    ======================================================= -->
+
+    <section
+        class="products-list-section"
+        aria-labelledby="products-title"
+    >
+
+
+        <!--
+        Si se solicita un query con un término de búsqueda,
+        se muestra un título indicando los resultados de la búsqueda.
+
+        Si no se solicitó una búsqueda pero sí una categoría,
+        se muestra un título indicando la categoría seleccionada.
+
+        Si no se solicitó ni búsqueda ni categoría,
+        se muestran todos los productos.
+        -->
+
+
+        <% if (searchTerm) { %>
+
+            <h1 id="products-title">
+
+                Resultados para:
+                "<%= searchTerm %>"
+
+            </h1>
+
+
+        <% } else if (selectedCategory) { %>
+
+            <h1 id="products-title">
+
+                Productos de
+                <%= selectedCategory %>
+
+            </h1>
+
+
+        <% } else { %>
+
+            <h1 id="products-title">
+
+                Todos los productos
+
+            </h1>
+
+        <% } %>
+
+
+
+        <!-- ======================================================
+            SI NO HAY PRODUCTOS
+        ======================================================= -->
+
+        <% if (products.length === 0) { %>
+
+
             <% if (searchTerm) { %>
 
-                <h1>
-                    Resultados para:
-                    "<%= searchTerm %>"
-                </h1>
+                <p class="no-products">
+
+                    No se encontraron productos
+                    para "<%= searchTerm %>".
+
+                </p>
+
 
             <% } else if (selectedCategory) { %>
 
-                <h1>
-                    Productos de
-                    <%= selectedCategory %>
-                </h1>
+                <p class="no-products">
+
+                    No hay productos disponibles
+                    en esta categoría.
+
+                </p>
+
 
             <% } else { %>
 
-                <h1>
-                    Todos los productos
-                </h1>
+                <p class="no-products">
+
+                    No hay productos disponibles.
+
+                </p>
 
             <% } %>
 
 
 
-            <!-- SI NO HAY PRODUCTOS -->
+        <% } else { %>
 
-            <% if (products.length === 0) { %>
+
+            <!-- ======================================================
+                ORDENAMIENTO
+            ======================================================= -->
+
+            <form
+                action="/products"
+                method="GET"
+                class="products-sort-form"
+            >
+
+
+                <!--
+                Si el listado actual proviene de una búsqueda,
+                conservamos el término buscado al ordenar.
+                es decir, se hace una nueva solicitud incluyendo los datos que ya se venian mostrando
+                por eso se usa hidden, ya que sino haria falta que cada vez que el usuario aplica un
+                filtro al listo que esta observando debe setear manualmente cada uno de los parametros
+                -->
 
                 <% if (searchTerm) { %>
 
-                    <p class="no-products">
-
-                        No se encontraron productos
-                        para "<%= searchTerm %>".
-
-                    </p>
-
-                <% } else { %>
-
-                    <p class="no-products">
-
-                        No hay productos disponibles
-                        en esta categoría.
-
-                    </p>
+                    <input
+                        type="hidden"
+                        name="q"
+                        value="<%= searchTerm %>"
+                    >
 
                 <% } %>
 
 
-            <% } else { %>
+
+                <!--
+                Si el listado actual pertenece a una categoría,
+                conservamos esa categoría al ordenar.
+                -->
+
+                <% if (
+                    typeof category !== "undefined"
+                    &&
+                    category
+                ) { %>
+
+                    <input
+                        type="hidden"
+                        name="category"
+                        value="<%= category %>"
+                    >
+
+                <% } %>
 
 
-                <!-- GRILLA DE PRODUCTOS -->
 
-                <ul class="products-grid">
+                <label for="sort">
+
+                    Ordenar por:
+
+                </label>
+
+                <!--
+                Este select no es oculto ya que es necesario que sea visible para el usuario
+                al momento de estar observando un listado de productos y quiera cambiar la disposicion
+                en que se muestran, sin tener que ademas seleccionar nuevamente la categoria o algun string
+                de busqueda
+                -->
+                <select
+                    id="sort"
+                    name="sort"
+                >
 
 
-                    <% products.forEach(product => { %>
+                    <option
+                        value=""
+                        <%=
+                            typeof sortOrder === "undefined"
+                            ||
+                            !sortOrder
+                                ? "selected"
+                                : ""
+                        %>
+                    >
+
+                        Sin ordenar
+
+                    </option>
 
 
-                        <li>
+                    <option
+                        value="price_asc"
+                        <%=
+                            typeof sortOrder !== "undefined"
+                            &&
+                            sortOrder === "price_asc"
+                                ? "selected"
+                                : ""
+                        %>
+                    >
+
+                        Precio: menor a mayor
+
+                    </option>
+
+
+                    <option
+                        value="price_desc"
+                        <%=
+                            typeof sortOrder !== "undefined"
+                            &&
+                            sortOrder === "price_desc"
+                                ? "selected"
+                                : ""
+                        %>
+                    >
+
+                        Precio: mayor a menor
+
+                    </option>
+
+
+                </select>
+
+
+                <button
+                    type="submit"
+                    class="products-sort-button"
+                >
+
+                    Ordenar
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- ======================================================
+                PRODUCTOS
+            ======================================================= -->
+
+            <div class="products-list">
+
+
+                <% products.forEach(product => { %>
+
+
+                    <article class="product-list-item">
+
+
+                        <!-- IMAGEN -->
+
+                        <a
+                            href="/products/<%= product.id %>"
+                            class="product-list-image"
+                        >
+
+                            <img
+                                src="<%= product.image %>"
+                                alt="Imagen de <%= product.name %>"
+                            >
+
+                        </a>
+
+
+
+                        <!-- INFORMACIÓN -->
+
+                        <div class="product-list-info">
 
 
                             <a
                                 href="/products/<%= product.id %>"
-                                class="product-card"
+                                class="product-list-name"
                             >
 
-
-                                <div class="product-image-container">
-
-                                    <img
-                                        src="<%= product.image %>"
-                                        alt="Imagen de <%= product.name %>"
-                                    >
-
-                                </div>
-
-
-                                <div class="product-info">
-
-
-                                    <h2>
-
-                                        <%= product.name %>
-
-                                    </h2>
-
-
-                                    <p class="product-description">
-
-                                        <%= product.description %>
-
-                                    </p>
-
-
-                                    <p class="product-price">
-
-                                        $<%= product.price %>
-
-                                    </p>
-
-
-                                    <% if (product.stock > 0) { %>
-
-                                        <p class="product-stock">
-
-                                            Stock:
-                                            <%= product.stock %>
-
-                                        </p>
-
-                                    <% } else { %>
-
-                                        <p class="product-no-stock">
-
-                                            Sin stock
-
-                                        </p>
-
-                                    <% } %>
-
-
-                                </div>
-
+                                <%= product.name %>
 
                             </a>
 
 
-                        </li>
+                            <p class="product-list-description">
+
+                                <%= product.description %>
+
+                            </p>
 
 
-                    <% }) %>
+                            <p class="product-list-category">
+
+                                <%= product.category %>
+
+                            </p>
 
 
-                </ul>
-
-
-            <% } %>
-
-
-        </section>
+                        </div>
 
 
 
-        <!-- CATEGORÍAS INFERIORES -->
+                        <!-- PRECIO Y ACCIÓN -->
 
-        <section
-            class="bottom-categories"
-            aria-label="Categorías de productos"
-        >
-
-            <%- include("../partials/categories") %>
-
-        </section>
+                        <div class="product-list-actions">
 
 
-    </main>
+                            <p class="product-list-price">
 
+                                $<%= product.price %>
+
+                            </p>
+
+
+                            <a
+                                href="/products/<%= product.id %>"
+                                class="product-list-button"
+                            >
+
+                                Ver producto
+
+                            </a>
+
+
+                        </div>
+
+
+                    </article>
+
+
+                <% }) %>
+
+
+            </div>
+
+
+        <% } %>
+
+
+    </section>
+
+
+</main>

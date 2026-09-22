@@ -81,7 +81,6 @@ function search(query) {
 
 }
 
-
 module.exports = {
     getAll,
     getById,
