@@ -32,8 +32,7 @@ function showRegister(req, res) {
 // ======================================================
 // PROCESAR REGISTRO
 // ======================================================
-
-async function registerUser(req, res, next) {
+function registerUser(req, res, next) {
 
     try {
 
@@ -87,7 +86,7 @@ async function registerUser(req, res, next) {
 
         // Buscamos si el usuario ya existe
         const existingUser =
-            await usersModel.findByUsername(
+            usersModel.findByUsername(
                 username
             );
 
@@ -101,15 +100,13 @@ async function registerUser(req, res, next) {
 
         // Encriptamos la contraseña
         const hashedPassword =
-            await bcrypt.hash(
+            bcrypt.hashSync(
                 password,
                 10
             );
 
         // Creamos el nuevo usuario
         const newUser = {
-
-            id: Date.now(),
 
             username: username,
 
@@ -122,8 +119,8 @@ async function registerUser(req, res, next) {
         };
 
 
-        // Guardamos en users.json
-        await usersModel.create(
+        // Guardamos en la base de datos
+        usersModel.create(
             newUser
         );
 
@@ -133,11 +130,12 @@ async function registerUser(req, res, next) {
 
 
     } catch (error) {
-// Si ocurre un error, lo pasamos al middleware de manejo de errores, ya que una operación asincrónica puede fallar. 
-// por users.json no existe
-// no hay permisos
-// JSON corrupto
-// problema de escritura
+// Si ocurre un error, lo pasamos al middleware de manejo de errores.
+// Por ejemplo:
+// - error al ejecutar una consulta SQL
+// - violación de una restricción UNIQUE
+// - problema de acceso al archivo de la base de datos
+// - error durante el hashing de la contraseña
         next(error);
 
     }

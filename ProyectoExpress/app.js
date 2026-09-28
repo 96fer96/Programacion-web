@@ -19,12 +19,14 @@ const viewDataMiddleware = require("./middleware/viewdata.middleware.js");
 
 app.set("view engine", "ejs");
 
-const expressLayouts =
-    require("express-ejs-layouts");
+const expressLayouts = require("express-ejs-layouts");
+
+// Importo la función encargada de inicializar la estructura de la base de datos.
+// Al ejecutarse, crea las tablas necesarias solo si todavía no existen.
+const { initDatabase } = require("./database/init.database.js");
 
 // Utilizo express-ejs-layouts para definir una estructura común para las vistas de la aplicación.
 app.use(expressLayouts);
-
 
 //Cada vez que se renderice una vista EJS, se envuelve por defecto con el layout principal definido en layouts/main.ejs. 
 //Esto permite mantener una apariencia consistente en todas las páginas de la aplicación.
@@ -40,7 +42,6 @@ app.use(
         path.join(__dirname, "assets")
     )
 );
-
 
 //Esta línea de código configura un middleware en la aplicación Express para procesar datos enviados a través de
 // formularios HTML utilizando el método POST.
@@ -69,6 +70,7 @@ app.use(viewDataMiddleware.showCartAndUser);
 //utilizá las rutas definidas dentro de router.”
 app.use("/", router);
 
+initDatabase();
 
 app.listen(port, () => {
 
