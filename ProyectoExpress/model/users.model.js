@@ -15,7 +15,7 @@ function findByUsername(username) {
     )
 }
 
-function create(user) {
+function create(username, name, email, hashedPassword) {
 
     return db.prepare(
         `
@@ -29,16 +29,15 @@ function create(user) {
             :username,
             :name,
             :email,
-            :password
+            :hashedPassword
         )
         `
-    //Dado que los atributos de user se llaman igual que los valores que re proveen a la consulta, no hace falta
-    //especificar que cada uno le corresponde a uno del mismo nombre:
-    //username: user.username,
-    //name: user.name,
-    //email: user.email,
-    //password: user.password
-    ).run(user);
+    ).run({
+        username,
+        name,
+        email,
+        hashedPassword
+    });
 }
 
 //Si bien esta funcion no es invocada por el service, puede ser invocada por un middleware al momento del realizar

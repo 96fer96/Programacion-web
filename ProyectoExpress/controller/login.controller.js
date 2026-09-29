@@ -1,5 +1,3 @@
-const usersModel = require("../model/users.model");
-const bcrypt = require("bcryptjs");
 
 function showLogin(req, res) {
     res.render("pages/login",
@@ -11,39 +9,32 @@ function showLogin(req, res) {
     );
 }
 
-async function processLogin(req, res, next) {
+function processLogin(req, res, next) {
     try {
     const {
         username,
         password
     } = req.body;
 
-    const user =
-        await usersModel.findByUsername(username);
+    const data = {
+        username,
+        password
+    }
 
-    if (!user) {
+    const result = processLogin(data);
+
+    if (result.success) {
+        req.session.userId = user.id;
+
+        res.redirect("/");
+    }
+
+    if (result.error === "USUARIO_O_PASSWORD_INCORRECTOS") {
         return res.render("pages/login", {
             error: "Usuario o contraseña incorrectos"
         });
     }
 
-    const passwordIsValid =
-        await bcrypt.compare(
-            password,
-            user.password
-        );
-
-    if (!passwordIsValid) {
-        return res.render("pages/login", {
-            error: "Usuario o contraseña incorrectos"
-        });
-    }
-
-    // Login correcto
-    //En la sesión actual, guardá qué usuario inició sesión.
-    req.session.userId = user.id;
-
-    res.redirect("/");
     } catch (error) {
         next(error);
     }

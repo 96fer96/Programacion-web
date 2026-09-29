@@ -2,15 +2,7 @@
 // MODELOS Y DEPENDENCIAS
 // ======================================================
 
-const usersModel =
-    require("../model/users.model");
-
-//Esta línea de código importa el módulo bcryptjs, que es una biblioteca de JavaScript utilizada para encriptar y 
-// verificar contraseñas de manera segura.
-const bcrypt =
-    require("bcryptjs");
-
-
+const usersService = require("../service/users.service");
 
 // ======================================================
 // MOSTRAR FORMULARIO DE REGISTRO
@@ -27,8 +19,6 @@ function showRegister(req, res) {
     );
 }
 
-
-
 // ======================================================
 // PROCESAR REGISTRO
 // ======================================================
@@ -36,6 +26,25 @@ function registerUser(req, res, next) {
 
     try {
 
+        /*sintaxis de JavaScript llamada desestructuración de objetos
+        Las llaves: { ... } en este caso significan: “Extraé estas propiedades
+        del objeto que está a la derecha”.
+        Es lo mismo que hacer:
+        const username =
+            req.body.username;
+
+        const name =
+            req.body.name;
+
+        const email =
+            req.body.email;
+
+        const password =
+            req.body.password;
+
+        const confirmPassword =
+            req.body.confirmPassword;
+        */
         const {
             username,
             name,
@@ -44,98 +53,54 @@ function registerUser(req, res, next) {
             confirmPassword
         } = req.body;
 
-
-        // Verificamos que las contraseñas coincidan
-        if (password !== confirmPassword) {
-
-            return res.render("pages/register", {
-                layout: false,
-                error: "Las contraseñas no coinciden"
-            });
-
+        const userData = {
+            username,
+            name,
+            email,
+            password,
+            confirmPassword
         }
 
-        //Declaro expresiones regulares mediante la funcion test(), la cual, aplicada a una determinada cadena de 
-        // texto, devuelve true si la cadena cumple con el patrón definido por la expresión regular, o false en caso contrario.
-        const hasUppercase =
-        /[A-Z]/.test(password);
+        const result = usersService.registerUser(userData);
 
-        const hasLowercase =
-            /[a-z]/.test(password);
+        if (result.success) {
+            // Una vez registrado, enviamos al login
+            return res.redirect("/login");
+        }
 
-        const hasNumber =
-            /[0-9]/.test(password);
+        if (!result.success) {
+            if (result.error === "PASSWORD_DIFERENTES")
+                return res.render("pages/register", {
+                    layout: false,
+                    error: "Las contraseñas no coinciden"
+                });
 
-        const hasSpecialCharacter =
-            /[^a-zA-Z0-9]/.test(password);
-
-        const hasForbiddenPassword =
-            /(1234|password|qwerty)/i.test(password);
-
-        if (!hasUppercase || !hasLowercase || !hasNumber || !hasSpecialCharacter || password.length < 8) {
-            return res.render("pages/register", {
+            if (result.error === "ERROR_CONTROL_CARACTERES")
+                return res.render("pages/register", {
+                layout: false,
                 error: "La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una letra minúscula, un número y un carácter especial."
             })
+
+            if (result.error === "PASSWORD_PROHIBIDA")
+                return res.render("pages/register", {
+                    layout: false,
+                    error: "La contraseña no puede contener palabras comunes como 'password', 'mi nombre', 'mi usuario/username', '1234' o 'qwerty'."
+                });
+
+            if (result.error === "USUARIO_EXISTENTE")
+                return res.render("pages/register", {
+                    layout: false,
+                    error: "El nombre de usuario ya se encuentra registrado"
+                });
         }
-
-        if (hasForbiddenPassword) {
-            return res.render("pages/register", {
-                error: "La contraseña no puede contener palabras comunes como 'password', 'mi nombre', 'mi usuario/username', '1234' o 'qwerty'."
-            });
-        }
-
-        // Buscamos si el usuario ya existe
-        const existingUser =
-            usersModel.findByUsername(
-                username
-            );
-
-        if (existingUser) {
-
-            return res.render("pages/register", {
-                error: "El nombre de usuario ya se encuentra registrado"
-            });
-
-        }
-
-        // Encriptamos la contraseña
-        const hashedPassword =
-            bcrypt.hashSync(
-                password,
-                10
-            );
-
-        // Creamos el nuevo usuario
-        const newUser = {
-
-            username: username,
-
-            name: name,
-
-            email: email,
-
-            password: hashedPassword
-
-        };
-
-
-        // Guardamos en la base de datos
-        usersModel.create(
-            newUser
-        );
-
-
-        // Una vez registrado, enviamos al login
-        res.redirect("/login");
-
 
     } catch (error) {
-// Si ocurre un error, lo pasamos al middleware de manejo de errores.
-// Por ejemplo:
-// - error al ejecutar una consulta SQL
-// - violación de una restricción UNIQUE
-// - problema de acceso al archivo de la base de datos
-// - error durante el hashing de la contraseña
+/* Si ocurre un error, lo pasamos al middleware de manejo de errores.
+Por ejemplo:
+- error al ejecutar una consulta SQL
+- violación de una restricción UNIQUE
+- problema de acceso al archivo de la base de datos
+- error durante el hashing de la contraseña*/
         next(error);
 
     }

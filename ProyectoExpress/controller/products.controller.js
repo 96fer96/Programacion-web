@@ -67,9 +67,6 @@ function list(req, res, next) {
 
 }
 
-
-
-
 // ======================================================
 // DETALLE DE UN PRODUCTO
 // ======================================================
@@ -102,16 +99,14 @@ function detail(req, res, next) {
         }
 
 
-        // Una vez validado el ID, buscamos
-        // el producto correspondiente.
+        // Una vez validado el ID, buscamos el producto correspondiente.
         const product =
             productsService.getProductById(
                 id
             );
 
 
-        // Si el producto solicitado no existe,
-        // respondemos con un error 404.
+        // Si el producto solicitado no existe, respondemos con un error 404.
         if (!product) {
 
             return res
@@ -121,7 +116,6 @@ function detail(req, res, next) {
                 );
 
         }
-
 
         const suggestedProducts =
             productsService.getSuggestedProducts(
@@ -144,7 +138,6 @@ function detail(req, res, next) {
         next(error);
     }
 }
-
 
 // ======================================================
 // EXPORTACIONES

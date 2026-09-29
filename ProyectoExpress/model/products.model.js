@@ -1,5 +1,3 @@
-/*path sirve para construir rutas de archivos correctamente.
-const path = require("path");*/
 const {
     db
 } = require(
@@ -15,7 +13,7 @@ function getAll() {
 
 function getById(id) {
     return db.prepare(
-        `SELECT * FROM products WHERE 
+        `SELECT * FROM products WHERE
         id = :id`
     ).get(
         {id}
