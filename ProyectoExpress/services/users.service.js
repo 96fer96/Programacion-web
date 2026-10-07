@@ -99,23 +99,38 @@ function hashPassword(password) {
 }
 
 function processLogin(data) {
-    if (!usersModel.findByUsername
-        (data.username)
-        ||
-        !bcrypt.compare(
-                password,
-                user.password
-            )
-        ) {
-            return {
-                success: false,
-                error: "USUARIO_O_PASSWORD_INCORRECTOS"
-            }
+
+    const user =
+        usersModel.findByUsername(
+            data.username
+        );
+
+
+    if (!user) {
+
+        return {
+            success: false,
+            error: "USUARIO_INCORRECTO"
+        };
     }
 
-    return {
-        success: true
+
+    if (!bcrypt.compareSync(
+        data.password,
+        user.password
+    )) {
+
+        return {
+            success: false,
+            error: "PASSWORD_INCORRECTO"
+        };
     }
+
+
+    return {
+        success: true,
+        userId: user.id
+    };
 }
 
 module.exports = {

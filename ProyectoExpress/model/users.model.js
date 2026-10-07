@@ -7,7 +7,10 @@ const {
 function findByUsername(username) {
     return db.prepare(
         `
-        SELECT * FROM users WHERE
+        SELECT
+        id,
+        password
+        FROM users WHERE
         username = :username
         `
     ).get(

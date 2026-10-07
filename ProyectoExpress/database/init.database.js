@@ -8,7 +8,14 @@ const {
 // ======================================================
 
 function initDatabase() {
-    return db.prepare(`
+
+    /*
+    db.exec()
+        → ejecuta directamente SQL
+        → puede contener varias sentencias
+        → no genera un Statement para usar con .run()/.get()/.all()
+    */
+    return db.exec(`
 
         CREATE TABLE IF NOT EXISTS products (
 
@@ -45,7 +52,7 @@ function initDatabase() {
 
         );
 
-    `).run();
+    `);
 
 }
 

@@ -2,7 +2,7 @@
 // MODELOS Y DEPENDENCIAS
 // ======================================================
 
-const usersService = require("../service/users.service");
+const usersService = require("../services/users.service");
 
 // ======================================================
 // MOSTRAR FORMULARIO DE REGISTRO

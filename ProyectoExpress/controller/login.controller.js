@@ -1,7 +1,8 @@
+const usersService = require("../services/users.service");
 
 function showLogin(req, res) {
     res.render("pages/login",
-        //Indico explicitamente que no quiero usar el layout principal para esta vista, sino que quiero renderizarla 
+        //Indico explicitamente que no quiero usar el layout principal para esta vista, sino que quiero renderizarla
         //sin ningún layout.
         {
             layout: false
@@ -21,10 +22,10 @@ function processLogin(req, res, next) {
         password
     }
 
-    const result = processLogin(data);
+    const result = usersService.processLogin(data);
 
     if (result.success) {
-        req.session.userId = user.id;
+        req.session.userId = result.userId;
 
         res.redirect("/");
     }

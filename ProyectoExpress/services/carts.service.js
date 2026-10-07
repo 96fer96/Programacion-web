@@ -74,7 +74,6 @@ function addProduct(cart, productId, quantity) {
     // aumentamos su cantidad.
     if (existingItem) {
 
-
         const newQuantity =
             existingItem.quantity +
             quantity;
