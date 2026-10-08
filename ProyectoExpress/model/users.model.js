@@ -1,64 +1,63 @@
-const fs = require("fs").promises;
-const path = require("path");
+const {
+    db
+} = require(
+    "../database/database.js"
+)
 
-const usersPath = path.join(
-    __dirname,
-    "data",
-    "users.json"
-);
-
-
-async function getAll() {
-
-    const data = await fs.readFile(
-        usersPath,
-        "utf-8"
-    );
-
-    return JSON.parse(data);
+function findByUsername(username) {
+    return db.prepare(
+        `
+        SELECT
+        id,
+        password
+        FROM users WHERE
+        username = :username
+        `
+    ).get(
+        {username}
+    )
 }
 
+function create(username, name, email, hashedPassword) {
 
-async function findByUsername(username) {
-
-    const users = await getAll();
-
-    return users.find(
-        user => user.username === username
-    );
+    return db.prepare(
+        `
+        INSERT INTO users (
+            username,
+            name,
+            email,
+            password
+        )
+        VALUES (
+            :username,
+            :name,
+            :email,
+            :hashedPassword
+        )
+        `
+    ).run({
+        username,
+        name,
+        email,
+        hashedPassword
+    });
 }
 
-
-async function create(user) {
-
-    const users = await getAll();
-
-    users.push(user);
-
-    await fs.writeFile(
-        usersPath,
-        JSON.stringify(users, null, 4)
-    );
-
-    return user;
+//Si bien esta funcion no es invocada por el service, puede ser invocada por un middleware al momento del realizar
+//un session y almacenar valores
+function getById(id) {
+    return db.prepare(
+        `
+        SELECT * FROM users WHERE
+        id = :id
+        `
+    ).get(
+        {id}
+    )
 }
-
-async function getById(id) {
-
-    const users = await getAll();
-
-    return users.find(
-        user => user.id === id
-    );
-}
-
-
-
 
 module.exports = {
-    getAll,
     findByUsername,
     getById,
-
     create
 };

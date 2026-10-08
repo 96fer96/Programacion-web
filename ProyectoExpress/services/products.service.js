@@ -8,7 +8,6 @@ function list(category, query, order) {
 
     let products;
 
-
     // ======================================================
     // SELECCIÓN DE PRODUCTOS
     // ======================================================

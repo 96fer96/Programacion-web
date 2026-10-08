@@ -1,9 +1,8 @@
-const usersModel = require("../model/users.model");
-const bcrypt = require("bcryptjs");
+const usersService = require("../services/users.service");
 
 function showLogin(req, res) {
     res.render("pages/login",
-        //Indico explicitamente que no quiero usar el layout principal para esta vista, sino que quiero renderizarla 
+        //Indico explicitamente que no quiero usar el layout principal para esta vista, sino que quiero renderizarla
         //sin ningún layout.
         {
             layout: false
@@ -11,40 +10,38 @@ function showLogin(req, res) {
     );
 }
 
-async function processLogin(req, res, next) {
+function processLogin(req, res, next) {
     try {
     const {
         username,
         password
     } = req.body;
 
-    const user =
-        await usersModel.findByUsername(username);
+    const data = {
+        username,
+        password
+    }
 
-    if (!user) {
+    const result = usersService.processLogin(data);
+
+    if (result.success) {
+        req.session.userId = result.userId;
+
+        res.redirect("/");
+    }
+
+    if (result.error === "USUARIO_INCORRECTO") {
         return res.render("pages/login", {
-            error: "Usuario o contraseña incorrectos"
+            error: "Usuario incorrecto"
         });
     }
 
-    const passwordIsValid =
-        await bcrypt.compare(
-            password,
-            user.password
-        );
-
-    if (!passwordIsValid) {
+    if (result.error === "PASSWORD_INCORRECTO") {
         return res.render("pages/login", {
-            error: "Usuario o contraseña incorrectos"
+            error: "Contraseña incorrecta"
         });
     }
-
-    // Login correcto
-    //En la sesión actual, guardá qué usuario inició sesión.
-    req.session.userId = user.id;
-
-    res.redirect("/");
-    } catch (error) {
+} catch (error) {
         next(error);
     }
 }
