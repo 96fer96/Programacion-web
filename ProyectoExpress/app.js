@@ -65,17 +65,23 @@ app.use(
 // Middleware para pasar información al carrito y al usuario logueado a todas las vistas
 app.use(viewDataMiddleware.showCartAndUser);
 
-
 //asocio la constante con la ruta raiz, esta diciendo: “Para las peticiones que comiencen desde /,
 //utilizá las rutas definidas dentro de router.”
 app.use("/", router);
 
 initDatabase();
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
 
     console.log(
         `Servidor funcionando en http://localhost:${port}`
     );
 
 });
+
+const { createWebSocketServer } = require("./websocket/server.websocket.js");
+
+//crea un servidor WebSocket utilizando la función createWebSocketServer y lo asocia con el servidor HTTP existente.
+const wss = createWebSocketServer(server);
+
+
