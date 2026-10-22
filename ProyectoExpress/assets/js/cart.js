@@ -1,39 +1,137 @@
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-//este archivo se encarga de manejar la logica del carrito de compras, especificamente el incremento y decremento de la 
-//cantidad de productos en el carrito, y es llamado cuando cart.ejs lo requiere: "<script src="/js/cart.js"></script>"
+        const quantityForms =
+            document.querySelectorAll(
+                ".cart-quantity-form"
+            );
 
-document.addEventListener("DOMContentLoaded", () => {
-    const quantityForms = document.querySelectorAll(".cart-quantity-form");
+        quantityForms.forEach(
+            form => {
 
-    quantityForms.forEach(form => {
-        const minusBtn = form.querySelector(".qty-minus");
-        const plusBtn = form.querySelector(".qty-plus");
-        const input = form.querySelector(".qty-input");
+                const minusBtn =
+                    form.querySelector(
+                        ".qty-minus"
+                    );
 
-        minusBtn.addEventListener("click", () => {
-            let value = Number(input.value);
-            const min = Number(input.min);
+                const plusBtn =
+                    form.querySelector(
+                        ".qty-plus"
+                    );
 
-            if (value > min) {
-                input.value = value - 1;
-                form.submit();
+                const input =
+                    form.querySelector(
+                        ".qty-input"
+                    );
+
+
+                minusBtn.addEventListener(
+                    "click",
+                    () => {
+
+                        let value =
+                            Number(
+                                input.value
+                            );
+
+                        const min =
+                            Number(
+                                input.min
+                            );
+
+                        if (value > min) {
+
+                            const newQuantity =
+                                value - 1;
+
+                            input.value =
+                                newQuantity;
+
+                            sendQuantityChange(
+                                form,
+                                newQuantity
+                            );
+                        }
+                    }
+                );
+
+
+                plusBtn.addEventListener(
+                    "click",
+                    () => {
+
+                        let value =
+                            Number(
+                                input.value
+                            );
+
+                        const max =
+                            Number(
+                                input.max
+                            );
+
+                        if (value < max) {
+
+                            const newQuantity =
+                                value + 1;
+
+                            input.value =
+                                newQuantity;
+
+                            sendQuantityChange(
+                                form,
+                                newQuantity
+                            );
+                        }
+                    }
+                );
             }
-        });
+        );
+    }
+);
 
-        plusBtn.addEventListener("click", () => {
-            let value = Number(input.value);
-            const max = Number(input.max);
 
-            if (value < max) {
-                input.value = value + 1;
-                form.submit();
-            }
-        });
-    });
-});
-/*
-const socket = new WebSocket("ws://localhost:3000");
+// ======================================================
+// ENVIAR CAMBIO DE CANTIDAD POR WEBSOCKET
+// ======================================================
 
-socket.addEventListener("open", () => {
-    console.log("Conexión WebSocket establecida");
-})*/
+function sendQuantityChange(
+    form,
+    quantity
+) {
+
+    const productId =
+        Number(
+            form.dataset.productId
+        );
+
+
+    if (
+        window.appSocket &&
+        window.appSocket.readyState ===
+            WebSocket.OPEN
+    ) {
+
+        window.appSocket.send(
+            JSON.stringify({
+                type:
+                    "CART_QUANTITY_CHANGE",
+
+                payload: {
+                    productId:
+                        productId,
+
+                    quantity:
+                        quantity
+                }
+            })
+        );
+
+    } else {
+
+        console.log(
+            "WebSocket no disponible"
+        );
+    }
+}

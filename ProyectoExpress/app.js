@@ -54,12 +54,16 @@ app.use(
     })
 );
 
-app.use(
+const sessionMiddleware =
     session({
-        secret: "mi-clave-secreta",
+        secret: "tu-secreto",
         resave: false,
         saveUninitialized: false
-    })
+    });
+
+
+app.use(
+    sessionMiddleware
 );
 
 // Middleware para pasar información al carrito y al usuario logueado a todas las vistas
@@ -82,6 +86,5 @@ const server = app.listen(port, () => {
 const { createWebSocketServer } = require("./websocket/server.websocket.js");
 
 //crea un servidor WebSocket utilizando la función createWebSocketServer y lo asocia con el servidor HTTP existente.
-const wss = createWebSocketServer(server);
-
+const wss = createWebSocketServer(server, sessionMiddleware);
 

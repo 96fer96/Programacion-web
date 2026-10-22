@@ -265,10 +265,29 @@ function removeProduct(cart, productId) {
 
 }
 
+// ======================================================
+// OBTENER CANTIDAD TOTAL DEL CARRITO
+// ======================================================
+
+function getCartCount(cart) {
+
+    if (!cart) {
+        return 0;
+    }
+
+
+    return cart.items.reduce(
+        (total, item) =>
+            total + item.quantity,
+        0
+    );
+}
+
 module.exports = {
     getItems,
     getTotal,
     getProductById,
+    getCartCount,
     createCart,
     addProduct,
     updateQuantity,

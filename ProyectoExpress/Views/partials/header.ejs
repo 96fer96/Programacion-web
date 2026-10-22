@@ -47,23 +47,31 @@
 
         <% if (currentUser) { %>
 
-            <span class="header-username">
-                <%= currentUser.name %>
-            </span>
+            <div class="header-user-info">
+
+                <span class="header-username">
+                    <%= currentUser.name %>
+                </span>
+
+                <span
+                    id="ws-status-indicator"
+                    class="ws-status-indicator disconnected"
+                    title="WebSocket desconectado"
+                ></span>
+
+            </div>
 
             <form
                 action="/logout"
                 method="POST"
                 class="logout-form"
             >
-
                 <button
                     type="submit"
-                    class="logout-button"
+                    class="header-logout"
                 >
                     Cerrar sesión
                 </button>
-
             </form>
 
             <a
@@ -74,13 +82,14 @@
 
                 <i class="fa-solid fa-cart-shopping"></i>
 
-                <% if (cartCount > 0) { %>
-
-                    <span class="cart-count">
-                        <%= cartCount %>
-                    </span>
-
-                <% } %>
+                <span
+                    class="cart-count"
+                    <% if (cartCount === 0) { %>
+                        style="display: none;"
+                    <% } %>
+                >
+                    <%= cartCount %>
+                </span>
 
             </a>
 

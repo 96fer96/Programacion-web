@@ -1275,20 +1275,36 @@ DETALLE DEL PRODUCTO
 HEADER
 ========================= */
 
-
-
 .header-user-section {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-left: auto;
-    white-space: nowrap;
+    gap: 20px;
+}
+
+.header-user-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: fit-content;
 }
 
 .header-username {
-    font-size: 14px;
-    color: #333;
+    font-size: 1.1rem;
     font-weight: 500;
+    color: #222;
+    line-height: 1;
+}
+
+.header-logout {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #222;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.header-logout:hover {
+    text-decoration: underline;
 }
 
 .header-cart {
@@ -1344,7 +1360,29 @@ HEADER
 }
 
 /* ======================================================
-   ERROR 404
+    ESTADO DE CONEXION WEBSOCKET
+====================================================== */
+
+.ws-status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #bdbdbd; /* gris por defecto */
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.ws-status-indicator.connected {
+    background-color: #2ecc71; /* verde */
+    box-shadow: 0 0 6px rgba(46, 204, 113, 0.5);
+}
+
+.ws-status-indicator.disconnected {
+    background-color: #e74c3c; /* rojo opcional */
+}
+
+/* ======================================================
+    ERROR 404
 ====================================================== */
 
 .error-page {
@@ -1390,6 +1428,19 @@ LOGOUT
     margin: 0;
 }
 
+.header-logout {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    color: #222;
+    text-decoration: none;
+}
+
+.header-logout:hover {
+    text-decoration: underline;
+}
 
 .logout-button {
     background: none;
