@@ -10,6 +10,12 @@ const statusIndicator =
 // para usuarios autenticados.
 if (statusIndicator) {
 
+    connectWebSocket();
+}
+
+
+function connectWebSocket() {
+
     const socket =
         new WebSocket(
             "ws://localhost:3000"
@@ -17,7 +23,7 @@ if (statusIndicator) {
 
 
     // Permite que otros archivos JS puedan acceder
-    // a la misma conexión WebSocket sin crear otra.
+    // a la conexión WebSocket activa.
     window.appSocket =
         socket;
 
@@ -82,6 +88,20 @@ if (statusIndicator) {
 
             statusIndicator.title =
                 "WebSocket desconectado";
+
+
+            setTimeout(
+                () => {
+
+                    console.log(
+                        "Intentando reconectar WebSocket..."
+                    );
+
+                    connectWebSocket();
+
+                },
+                3000
+            );
         }
     );
 
@@ -123,6 +143,7 @@ if (statusIndicator) {
             }
         }
     );
+
 
     // ======================================================
     // ERROR DE WEBSOCKET

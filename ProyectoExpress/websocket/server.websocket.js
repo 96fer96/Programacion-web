@@ -1,11 +1,15 @@
 const {
-    WebSocketServer,
-    WebSocket
+    WebSocketServer
 } = require("ws");
 
 const cartsService =
     require(
         "../services/carts.service"
+    );
+
+const websocketService =
+    require(
+        "../services/websocket.service"
     );
 
 function createWebSocketServer(
@@ -65,7 +69,6 @@ function createWebSocketServer(
         }
     );
 
-
     wss.on(
         "connection",
         (
@@ -75,10 +78,9 @@ function createWebSocketServer(
             const userId =
                 request.session.userId;
 
-            // Asociamos esta conexión WebSocket
-            // con el usuario autenticado.
-            ws.userId =
-                userId;
+            websocketService.registerConnection(
+                ws, userId
+            );
 
             console.log(
                 "Cliente conectado al WebSocket"
@@ -89,7 +91,6 @@ function createWebSocketServer(
                 request.session.userId
             );
 
-
             ws.on(
                 "message",
                 (message) => {
@@ -98,6 +99,10 @@ function createWebSocketServer(
                         JSON.parse(
                             message.toString()
                         );
+
+                    // ======================================================
+                    // CAMBIAR CANTIDAD DEL CARRITO
+                    // ======================================================
 
                     if (
                         data.type ===
@@ -114,27 +119,21 @@ function createWebSocketServer(
                                 data.payload.quantity
                             );
 
-
                         const cart =
                             request.session.cart;
 
                         if (!cart) {
-
-                            ws.send(
-                                JSON.stringify({
-                                    type:
-                                        "CART_ERROR",
-                                    payload: {
-                                        error:
-                                        "CART_NOT_FOUND"
-                                    }
-                                    
-                                })
+                            websocketService.sendToConnection(
+                                ws,
+                                "CART_ERROR",
+                                {
+                                    error:
+                                        "No hay carrito asociado a la sesión."
+                                }
                             );
 
                             return;
                         }
-
 
                         const result =
                             cartsService
@@ -146,18 +145,14 @@ function createWebSocketServer(
 
                         if (!result.success) {
 
-                            ws.send(
-                                JSON.stringify({
-                                    type:
-                                        "CART_ERROR",
-
-                                    payload: {
+                            websocketService.sendToConnection(
+                                ws,
+                                "CART_ERROR",
+                                {
                                         error:
                                             result.error
                                     }
-                                })
-                            );
-
+                                );
                             return;
                         }
 
@@ -180,19 +175,14 @@ function createWebSocketServer(
                                     return;
                                 }
 
-
-                                sendToUser(
-                                    wss,
+                                websocketService.sendToUser(
                                     userId,
+                                    "CART_UPDATED",
                                     {
-                                        type:
-                                            "CART_UPDATED",
-                                        payload: {
-                                            cartCount:
-                                                cartCount
-                                        }
+                                        cartCount:
+                                            cartCount
                                     }
-                                );
+                                )
                             }
                         );
                     }
@@ -231,18 +221,13 @@ function createWebSocketServer(
 
                         if (!result.success) {
 
-                            ws.send(
-                                JSON.stringify({
-                                    type:
-                                        "CART_ERROR",
-
-                                    payload: {
+                            websocketService.sendToConnection(
+                                ws,
+                                "CART_ERROR",
+                                {
                                         error:
                                             result.error
-                                    }
-                                })
-                            );
-
+                                });
                             return;
                         }
 
@@ -265,17 +250,12 @@ function createWebSocketServer(
                                     return;
                                 }
 
-                                sendToUser(
-                                    wss,
+                                websocketService.sendToUser(
                                     userId,
+                                    "CART_UPDATED",
                                     {
-                                        type:
-                                            "CART_UPDATED",
-
-                                        payload: {
-                                            cartCount:
-                                                cartCount
-                                        }
+                                        cartCount:
+                                            cartCount
                                     }
                                 );
                             }
@@ -284,11 +264,17 @@ function createWebSocketServer(
                 }
             );
 
+            // ======================================================
+            // CONEXIÓN CERRADA
+            // ======================================================
 
             ws.on(
             "close",
             () => {
-
+                websocketService.removeConnection(
+                    ws
+                );
+                
                 console.log(
                     "Cliente desconectado del WebSocket"
                 );
@@ -299,32 +285,7 @@ function createWebSocketServer(
     return wss;
 }
 
-function sendToUser(
-    wss,
-    userId,
-    message
-) {
-
-    wss.clients.forEach(
-        (client) => {
-
-            if (
-                client.readyState === WebSocket.OPEN
-                &&
-                client.userId === userId
-            ) {
-
-                client.send(
-                    JSON.stringify(
-                        message
-                    )
-                );
-            }
-        }
-    );
-}
 
 module.exports = {
-    createWebSocketServer,
-    sendToUser
+    createWebSocketServer
 };

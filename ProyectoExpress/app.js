@@ -1,4 +1,3 @@
-
 //Importo el módulo express para poder crear la aplicación web y definir rutas, middleware y otras configuraciones.
 const express = require("express");
 
@@ -60,7 +59,6 @@ const sessionMiddleware =
         resave: false,
         saveUninitialized: false
     });
-
 
 app.use(
     sessionMiddleware
