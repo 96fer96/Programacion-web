@@ -75,6 +75,7 @@
                         <!-- CONTROL DE CANTIDAD -->
                         <form
                             action="/cart/update/<%= item.product.id %>"
+                            data-product-id="<%= item.product.id %>"
                             method="POST"
                             class="cart-quantity-form"
                         >

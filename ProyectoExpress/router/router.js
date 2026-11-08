@@ -2,12 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
-
-
-// MODELOS
-const productsModel = require("../model/products.model");
-
 //ROUTERS
+const indexRoutes = require("./index.routes");
 const productsRoutes = require("./products.routes");
 const cartsRoutes = require("./carts.routes");
 const registerRoutes = require("./register.routes");
@@ -22,21 +18,10 @@ const error500Routes = require("./error500.routes");
 // INICIO
 // ======================================================
 
-
-router.get("/", (req, res) => {
-//Cuando se hace una petición GET a la ruta raíz ("/"), se obtiene la lista de productos desde el modelo productsModel
-// y se renderiza la vista "pages/index" pasando los productos como datos para que puedan ser utilizados en la
-//plantilla EJS.
-    const products = productsModel.getAll();
-
-    res.render("pages/index", {
-        products: products
-    });
-
-});
+router.use(indexRoutes);
 
 // ======================================================
-// RUTAS DE PRODUCTOS
+// RUTAS
 // ======================================================
 
 router.use(productsRoutes);

@@ -32,13 +32,15 @@ function processLogin(req, res, next) {
 
     if (result.error === "USUARIO_INCORRECTO") {
         return res.render("pages/login", {
-            error: "Usuario incorrecto"
+            error: "Usuario incorrecto",
+            layout: false
         });
     }
 
     if (result.error === "PASSWORD_INCORRECTO") {
         return res.render("pages/login", {
-            error: "Contraseña incorrecta"
+            error: "Contraseña incorrecta",
+            layout: false
         });
     }
 } catch (error) {
