@@ -24,6 +24,10 @@ const expressLayouts = require("express-ejs-layouts");
 // Al ejecutarse, crea las tablas necesarias solo si todavía no existen.
 const { initDatabase } = require("./database/init.database.js");
 
+// Importo el módulo cors para habilitar el intercambio de recursos entre diferentes orígenes (CORS) en la aplicación Express.
+const cors =
+    require("cors");
+
 // Utilizo express-ejs-layouts para definir una estructura común para las vistas de la aplicación.
 app.use(expressLayouts);
 
@@ -62,6 +66,16 @@ const sessionMiddleware =
 
 app.use(
     sessionMiddleware
+);
+
+//Implementación de CORS (Cross-Origin Resource Sharing) para permitir solicitudes desde diferentes orígenes.
+app.use(
+    cors()
+);
+
+// Middleware para procesar solicitudes con cuerpo en formato JSON
+app.use(
+    express.json()
 );
 
 // Middleware para pasar información al carrito y al usuario logueado a todas las vistas

@@ -42,9 +42,41 @@ function search(query) {
     )
 }
 
+function create(product) {
+    const { name, description, price, category } = product;
+    const result = db.prepare(
+        'INSERT INTO products (name, description, price, category) VALUES (:name, :description, :price, :category)'
+    ).run(
+        { name, description, price, category }
+    );
+    return { ...product, id: result.lastInsertRowid };
+}
+
+function update(id, product) {
+    const { name, description, price, category } = product;
+    const result = db.prepare(
+        'UPDATE products SET name = :name, description = :description, price = :price, category = :category WHERE id = :id'
+    ).run(
+        { name, description, price, category, id }
+    );
+    return { ...product, id };
+}
+
+function remove(id) {
+    const result = db.prepare(
+        'DELETE FROM products WHERE id = :id'
+    ).run(
+        { id }
+    );
+    return result;
+}
+
 module.exports = {
     getAll,
     getById,
     getByCategory,
-    search
+    search,
+    create,
+    update,
+    remove
 };
