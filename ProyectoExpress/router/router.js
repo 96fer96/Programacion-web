@@ -9,6 +9,7 @@ const cartsRoutes = require("./carts.routes");
 const registerRoutes = require("./register.routes");
 const loginRoutes = require("./login.routes");
 const checkoutRoutes = require("./checkout.routes");
+const apiRoutes = require("./api.routes");
 const error404Routes = require("./error404.routes");
 const logoutRoutes = require("./logout.routes");
 const error500Routes = require("./error500.routes");
@@ -33,6 +34,8 @@ router.use(registerRoutes);
 router.use(loginRoutes);
 
 router.use(checkoutRoutes);
+
+router.use(apiRoutes);
 
 router.use(logoutRoutes);
 

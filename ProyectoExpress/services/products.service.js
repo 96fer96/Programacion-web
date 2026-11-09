@@ -14,28 +14,21 @@ function list(category, query, order) {
 
     // Si existe una búsqueda
     if (query) {
-
         products =
             productsModel.search(query);
-
     }
 
 
     // Si existe una categoría
     else if (category) {
-
         products =
             productsModel.getByCategory(category);
-
     }
-
 
     // Si no hay búsqueda ni categoría
     else {
-
         products =
             productsModel.getAll();
-
     }
 
 
@@ -139,10 +132,25 @@ function normalizeId(id) {
 
 }
 
+function create(product) {
+    return productsModel.create(product);
+}
+
+function update(id, product) {
+    return productsModel.update(id, product);
+}
+
+function remove(id) {
+    return productsModel.remove(id);
+}
+
 module.exports = {
     list,
     getCategoryNames,
     getProductById,
     getSuggestedProducts,
-    normalizeId
+    normalizeId,
+    create,
+    update,
+    remove
 };
