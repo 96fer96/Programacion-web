@@ -3,6 +3,8 @@ const express = require("express");
 
 const path = require("path");
 
+require("dotenv").config();
+
 //express() sirve para crear una instancia de la aplicación Express, que es un objeto que representa la aplicación web y permite 
 // definir rutas, middleware y otras configuraciones. A diferencia de require("express"), que solo importa el módulo de Express, 
 // express() crea una instancia específica de la aplicación que se puede configurar y ejecutar.

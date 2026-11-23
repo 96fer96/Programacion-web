@@ -3,48 +3,162 @@ const usersModel =
 //Esta línea de código importa el módulo bcryptjs, que es una biblioteca de JavaScript utilizada para encriptar y 
 // verificar contraseñas de manera segura.
 const bcrypt =
-    require("bcryptjs");
+    require("bcrypt");
 
-function registerUser(userData) {
-    if (!comparePassword(userData.password, userData.confirmPassword)) {
+const SALT_ROUNDS =
+    Number(
+        process.env.BCRYPT_SALT_ROUNDS
+    ) || 10;
+
+function registerUser(
+    userData
+) {
+
+    // ==================================================
+    // VALIDAR CAMPOS OBLIGATORIOS
+    // ==================================================
+
+    if (
+        !userData.username ||
+        !userData.name ||
+        !userData.email ||
+        !userData.password ||
+        !userData.confirmPassword
+    ) {
+
         return {
             success: false,
-            error: "PASSWORD_DIFERENTES"
-        }
+            error:
+                "CAMPOS_OBLIGATORIOS"
+        };
     }
 
-    if (!controlCaracteres(userData.password))
-        return {
-            success: false,
-            error: "ERROR_CONTROL_CARACTERES"
-        }
 
-    if (!controlForbiddenPassword(userData.password))
-        return {
-            success: false,
-            error: "PASSWORD_PROHIBIDA"
-        }
+    // ==================================================
+    // VALIDAR COINCIDENCIA DE CONTRASEÑAS
+    // ==================================================
 
-    if (existingUser(userData.username)) {
+    if (
+        !comparePassword(
+            userData.password,
+            userData.confirmPassword
+        )
+    ) {
+
         return {
             success: false,
-            error: "USUARIO_EXISTENTE"
-        }
+            error:
+                "PASSWORD_DIFERENTES"
+        };
     }
 
-    const hashedPassword = hashPassword(userData.password);
+
+    // ==================================================
+    // VALIDAR COMPLEJIDAD
+    // ==================================================
+
+    if (
+        !controlCaracteres(
+            userData.password
+        )
+    ) {
+
+        return {
+            success: false,
+            error:
+                "ERROR_CONTROL_CARACTERES"
+        };
+    }
+
+
+    // ==================================================
+    // VALIDAR CONTRASEÑAS PROHIBIDAS
+    // ==================================================
+
+    if (
+        !controlForbiddenPassword(
+            userData.password
+        )
+    ) {
+
+        return {
+            success: false,
+            error:
+                "PASSWORD_PROHIBIDA"
+        };
+    }
+
+
+    // ==================================================
+    // VALIDAR USERNAME DUPLICADO
+    // ==================================================
+
+    if (
+        existingUser(
+            userData.username
+        )
+    ) {
+
+        return {
+            success: false,
+            error:
+                "USUARIO_EXISTENTE"
+        };
+    }
+
+
+    // ==================================================
+    // VALIDAR EMAIL DUPLICADO
+    // ==================================================
+
+    if (
+        existingEmail(
+            userData.email
+        )
+    ) {
+
+        return {
+            success: false,
+            error:
+                "EMAIL_EXISTENTE"
+        };
+    }
+
+
+    // ==================================================
+    // HASHEAR CONTRASEÑA
+    // ==================================================
+
+    const hashedPassword =
+        hashPassword(
+            userData.password
+        );
+
+
+    // ==================================================
+    // ASIGNAR ROL
+    // ==================================================
+
+    const role =
+        "consumer";
+
+
+    // ==================================================
+    // CREAR USUARIO
+    // ==================================================
 
     usersModel.create(
         userData.username,
         userData.name,
         userData.email,
-        hashedPassword
+        hashedPassword,
+        role
     );
 
-    return {
-        success: true,
-    }
 
+    return {
+        success: true
+    };
 }
 
 function comparePassword(password, confirmPassword) {
@@ -91,13 +205,15 @@ function existingUser(username) {
     return false
 }
 
-function hashPassword(password) {
-    return bcrypt.hashSync(
-                password,
-                10
-            )
-}
+function hashPassword(
+    password
+) {
 
+    return bcrypt.hashSync(
+        password,
+        SALT_ROUNDS
+    );
+}
 function processLogin(data) {
 
     const user =
@@ -131,6 +247,22 @@ function processLogin(data) {
         success: true,
         userId: user.id
     };
+}
+
+function existingEmail(
+    email
+) {
+
+    if (
+        usersModel.findByEmail(
+            email
+        )
+    ) {
+
+        return true;
+    }
+
+    return false;
 }
 
 module.exports = {
