@@ -20,6 +20,7 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.19.0",
     "jsonwebtoken": "^9.0.3",
+    "thunder-client": "^0.4.3",
     "ws": "^8.22.0"
   }
 }

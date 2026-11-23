@@ -9,6 +9,12 @@ const productsApiController =
         "../../controller/products.api.controller.js"
     );
 
+const {
+    verifyToken
+} = require(
+    "../../middleware/verifyToken.middleware.js"
+);
+
 router.get(
     "/",
     productsApiController.getAll
@@ -21,16 +27,19 @@ router.get(
 
 router.post(
     "/",
+    verifyToken,
     productsApiController.create
 );
 
 router.put(
     "/:id",
+    verifyToken,
     productsApiController.update
 );
 
 router.delete(
     "/:id",
+    verifyToken,
     productsApiController.remove
 );
 
