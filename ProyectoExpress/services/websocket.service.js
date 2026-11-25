@@ -16,11 +16,15 @@ const connections =
 
 function registerConnection(
     ws,
-    userId
+    userId,
+    sessionId
 ) {
 
     ws.userId =
         userId;
+
+    ws.sessionId =
+        sessionId;
 
     connections.add(
         ws
@@ -133,11 +137,30 @@ function broadcast(
     );
 }
 
+// ======================================================
+// CERRAR CONEXIONES DE UNA SESIÓN
+// ======================================================
+
+function closeSessionConnections(sessionId) {
+
+    connections.forEach((client) => {
+
+        if (client.sessionId === sessionId) {
+
+            client.close(
+                1008,
+                "Sesion finalizada"
+            );
+        }
+
+    });
+}
 
 module.exports = {
     registerConnection,
     removeConnection,
     sendToConnection,
     sendToUser,
-    broadcast
+    broadcast,
+    closeSessionConnections
 };

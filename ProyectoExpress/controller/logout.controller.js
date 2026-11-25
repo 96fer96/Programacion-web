@@ -1,8 +1,16 @@
+const websocketService =
+    require("../services/websocket.service.js");
+
+
 // ======================================================
 // CERRAR SESIÓN
 // ======================================================
 
 function logout(req, res, next) {
+
+    const sessionId =
+        req.sessionID;
+
 
     req.session.destroy(error => {
 
@@ -13,13 +21,22 @@ function logout(req, res, next) {
         }
 
 
-        // Eliminamos también la cookie que identifica
+        // Cerrar los WebSockets asociados
+        // a la sesión destruida.
+
+        websocketService.closeSessionConnections(
+            sessionId
+        );
+
+
+        // Eliminamos la cookie que identifica
         // la sesión en el navegador.
+
         res.clearCookie("connect.sid");
 
 
-        // Una vez cerrada la sesión,
-        // volvemos a la página principal.
+        // Volvemos a la página principal.
+
         res.redirect("/");
 
     });

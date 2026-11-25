@@ -7,6 +7,12 @@ const logoutController =
 const router =
     express.Router();
 
+const {
+    requireLogin
+} = require(
+    "../middleware/sessionAuth.middleware.js"
+);
+
 
 // ======================================================
 // LOGOUT
@@ -14,6 +20,7 @@ const router =
 
 router.post(
     "/logout",
+    requireLogin,
     logoutController.logout
 );
 

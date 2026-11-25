@@ -79,7 +79,7 @@ function createWebSocketServer(
                 request.session.userId;
 
             websocketService.registerConnection(
-                ws, userId
+                ws, userId, request.sessionID
             );
 
             console.log(
