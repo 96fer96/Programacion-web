@@ -18,6 +18,12 @@ const session = require("express-session");
 
 const viewDataMiddleware = require("./middleware/viewdata.middleware.js");
 
+const {
+    viewLocals
+} = require(
+    "./middleware/viewLocals.middleware.js"
+);
+
 app.set("view engine", "ejs");
 
 const expressLayouts = require("express-ejs-layouts");
@@ -59,16 +65,46 @@ app.use(
     })
 );
 
+/*
+El siguiente middleware se encarga de gestionar las sesiones de usuario en la aplicación Express. A su vez, la misma es instanciada
+para gestionar los datos de sesión de los usuarios que se conectan a través del servidor WebSocket y que se encuentran logueados 
+en la aplicación web. Esto permite mantener la información de sesión de manera consistente entre las solicitudes HTTP y las 
+conexiones WebSocket.
+*/
 const sessionMiddleware =
     session({
-        secret: "tu-secreto",
-        resave: false,
-        saveUninitialized: false
+
+        secret:
+            process.env.SESSION_SECRET,
+
+        resave:
+            false,
+
+        saveUninitialized:
+            false,
+
+        cookie: {
+
+            httpOnly:
+                true,
+
+            secure:
+                false,
+
+            sameSite:
+                "lax",
+
+            maxAge:
+                1000 * 60 * 60
+        }
     });
 
 app.use(
     sessionMiddleware
 );
+
+//Middleware para pasar información a todas las vistas sobre la autenticación del usuario, su rol y su estado de inicio de sesión.
+app.use(viewLocals);
 
 //Implementación de CORS (Cross-Origin Resource Sharing) para permitir solicitudes desde diferentes orígenes.
 app.use(

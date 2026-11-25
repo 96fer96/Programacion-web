@@ -1359,6 +1359,14 @@ HEADER
     border: 2px solid white;
 }
 
+.header-orders,
+.header-admin,
+.header-register {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 500;
+}
+
 /* ======================================================
     ESTADO DE CONEXION WEBSOCKET
 ====================================================== */
@@ -1669,3 +1677,4 @@ CHECKOUT
 
     color: white;
 }
+

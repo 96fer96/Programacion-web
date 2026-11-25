@@ -245,7 +245,8 @@ function processLogin(data) {
 
     return {
         success: true,
-        userId: user.id
+        userId: user.id,
+        role: user.role
     };
 }
 

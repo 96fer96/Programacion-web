@@ -9,12 +9,9 @@ const {
 // BUSCAR USUARIO POR USERNAME
 // ======================================================
 
-function findByUsername(
-    username
-) {
+function findByUsername(username) {
 
-    return db.prepare(
-        `
+    return db.prepare(`
         SELECT
             id,
             username,
@@ -22,12 +19,9 @@ function findByUsername(
             role
         FROM users
         WHERE username = :username
-        `
-    ).get(
-        {
-            username
-        }
-    );
+    `).get({
+        username
+    });
 }
 
 
