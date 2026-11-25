@@ -10,6 +10,12 @@ const productsApiController =
     );
 
 const {
+    requireAdmin
+} = require(
+    "../../middleware/requireAdmin.middleware.js"
+);
+
+const {
     verifyToken
 } = require(
     "../../middleware/verifyToken.middleware.js"
@@ -28,18 +34,21 @@ router.get(
 router.post(
     "/",
     verifyToken,
+    requireAdmin,
     productsApiController.create
 );
 
 router.put(
     "/:id",
     verifyToken,
+    requireAdmin,
     productsApiController.update
 );
 
 router.delete(
     "/:id",
     verifyToken,
+    requireAdmin,
     productsApiController.remove
 );
 
