@@ -2,23 +2,68 @@ const {
     db
 } = require(
     "../database/database.js"
-)
+);
+
+
+// ======================================================
+// BUSCAR USUARIO POR USERNAME
+// ======================================================
 
 function findByUsername(username) {
+
+    return db.prepare(`
+        SELECT
+            id,
+            username,
+            password,
+            role
+        FROM users
+        WHERE username = :username
+    `).get({
+        username
+    });
+}
+
+
+// ======================================================
+// BUSCAR USUARIO POR EMAIL
+// ======================================================
+
+function findByEmail(
+    email
+) {
+
     return db.prepare(
         `
         SELECT
-        id,
-        password
-        FROM users WHERE
-        username = :username
+            id,
+            username,
+            name,
+            email,
+            password,
+            role
+        FROM users
+        WHERE email = :email
         `
     ).get(
-        {username}
-    )
+        {
+            email
+        }
+    );
 }
 
-function create(username, name, email, hashedPassword) {
+
+// ======================================================
+// CREAR USUARIO
+// ======================================================
+
+function create(
+    username,
+    name,
+    email,
+    hashedPassword,
+    role
+) {
 
     return db.prepare(
         `
@@ -26,38 +71,56 @@ function create(username, name, email, hashedPassword) {
             username,
             name,
             email,
-            password
+            password,
+            role
         )
         VALUES (
             :username,
             :name,
             :email,
-            :hashedPassword
+            :hashedPassword,
+            :role
         )
         `
     ).run({
         username,
         name,
         email,
-        hashedPassword
+        hashedPassword,
+        role
     });
 }
 
-//Si bien esta funcion no es invocada por el service, puede ser invocada por un middleware al momento del realizar
-//un session y almacenar valores
-function getById(id) {
+
+// ======================================================
+// OBTENER USUARIO POR ID
+// ======================================================
+
+// Si bien esta función no es invocada actualmente por el Service,
+// puede ser utilizada posteriormente por middleware o mecanismos
+// de autenticación/sesión para recuperar los datos del usuario.
+
+function getById(
+    id
+) {
+
     return db.prepare(
         `
-        SELECT * FROM users WHERE
-        id = :id
+        SELECT *
+        FROM users
+        WHERE id = :id
         `
     ).get(
-        {id}
-    )
+        {
+            id
+        }
+    );
 }
+
 
 module.exports = {
     findByUsername,
+    findByEmail,
     getById,
     create
 };

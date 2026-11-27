@@ -4,8 +4,6 @@ const productsController = require("../controller/products.controller");
 
 const router = express.Router();
 
-
-
 // ======================================================
 // PRODUCTOS
 // ======================================================

@@ -9,7 +9,19 @@ function createCategoriesTable() {
         )
     `);
 }
+
+
+
 /*
+function addRoleToUsers() {
+
+    db.exec(`
+        ALTER TABLE users
+        ADD COLUMN role TEXT NOT NULL
+        DEFAULT 'consumer'
+    `);
+}
+
 function insertInitialCategories() {
     const initialCategories = [
         { name: "Electronica", description: "Dispositivos electrónicos y gadgets" },

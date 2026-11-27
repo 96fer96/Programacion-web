@@ -5,6 +5,12 @@ const registerController =
 
 const router = express.Router();
 
+const {
+    requireLogin , requireGuest , requireAdminSession
+} = require(
+    "../middleware/sessionAuth.middleware.js"
+);
+
 
 // ======================================================
 // REGISTRO
@@ -14,6 +20,7 @@ const router = express.Router();
 // Mostrar formulario
 router.get(
     "/register",
+    requireGuest,
     registerController.showRegister
 );
 
@@ -21,6 +28,7 @@ router.get(
 // Procesar formulario
 router.post(
     "/register",
+    requireGuest,
     registerController.registerUser
 );
 

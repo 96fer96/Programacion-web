@@ -1,6 +1,9 @@
 const productsService = require("../services/products.service");
 
 function getAll(req, res) {
+    console.log(
+        req.user
+    );
     const products = productsService.getAll();
     return res.status(200).json({
         data: products

@@ -27,7 +27,27 @@ function processLogin(req, res, next) {
     if (result.success) {
         req.session.userId = result.userId;
 
-        res.redirect("/");
+        req.session.regenerate((error) => {
+
+            if (error) {
+                return next(error);
+            }
+
+            req.session.userId =
+                result.userId;
+
+            req.session.role =
+                result.role;
+
+            req.session.save((error) => {
+
+                if (error) {
+                    return next(error);
+                }
+
+                return res.redirect("/");
+            });
+        });
     }
 
     if (result.error === "USUARIO_INCORRECTO") {
